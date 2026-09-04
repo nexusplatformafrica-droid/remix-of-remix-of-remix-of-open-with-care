@@ -173,7 +173,7 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mt-0.5 h-[38px] rounded-none bg-xb-nav md:mt-1 md:h-[42px] md:rounded-xl">
+      <nav className="mt-0.5 h-[32px] rounded-none bg-xb-nav md:mt-1 md:h-[36px] md:rounded-xl">
         <div className="xb-noscroll mx-auto flex h-full w-full max-w-[1440px] items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-2">
         {navItems.map((item) => (
           <Link
@@ -181,7 +181,7 @@ export function Header() {
             to={item.to}
             activeOptions={{ exact: item.to === "/" }}
             activeProps={{ className: "bg-white/15" }}
-            className="flex h-full shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-lg px-2 text-[10px] font-bold text-xb-on-dark transition-colors hover:bg-white/10 sm:text-[11px] md:min-w-0 md:flex-1 md:px-3 md:text-[13px]"
+            className="flex h-full shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-lg px-2 text-[10px] font-bold text-xb-on-dark transition-colors hover:bg-white/10 sm:text-[11px] md:min-w-0 md:flex-1 md:px-3 md:text-[12px]"
           >
             {item.label === "AVIATOR" && (
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-xb-green" />
