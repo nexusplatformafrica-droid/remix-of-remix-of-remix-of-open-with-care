@@ -265,7 +265,7 @@ function VirtualPageInner() {
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
       <Header />
-      <main className="flex w-full flex-1 flex-col gap-1.5 overflow-hidden px-0 pb-28 pt-1.5 md:px-1.5 md:pb-16 lg:pb-1.5">
+      <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-1.5 overflow-hidden px-0 pb-28 pt-1.5 md:px-1.5 md:pb-16 lg:pb-1.5">
         <div className="flex items-center justify-between rounded-lg bg-xb-panel px-3 py-[2px] text-[11px] font-bold text-xb-text shadow-sm">
           <span>
             Time to kickoff: <span className="text-xb-blue">{clock}</span>
