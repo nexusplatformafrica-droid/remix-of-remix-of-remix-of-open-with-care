@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { AlertTriangle, ListOrdered, Maximize2, Play } from "lucide-react";
+import { AlertTriangle, ListOrdered, Maximize2, Play, X } from "lucide-react";
 import { Header } from "@/components/xbet/Header";
 import { MobileNav } from "@/components/xbet/MobileNav";
 import { ClientOnly } from "@/components/xbet/ClientOnly";
@@ -151,6 +151,7 @@ function VirtualPageInner() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [slipOpen, setSlipOpen] = useState(false);
   const [streamOpen, setStreamOpen] = useState(false);
+  const [expandOpen, setExpandOpen] = useState(false);
   const [resultsOpen, setResultsOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -450,6 +451,34 @@ function VirtualPageInner() {
             Slip: {sels.length} · {totalOdds.toFixed(2)}
           </span>
         </div>
+
+        {/* Desktop results strip — last rounds at a glance */}
+        <div className="hidden shrink-0 items-center gap-2 overflow-hidden rounded-lg bg-xb-panel px-2 py-1 shadow-sm lg:flex">
+          <button
+            onClick={() => setResultsOpen(true)}
+            className="shrink-0 rounded bg-xb-blue px-3 py-1 text-[10px] font-black uppercase text-xb-on-dark transition-colors hover:bg-xb-blue-light"
+          >
+            Results
+          </button>
+          <span className="shrink-0 border-l border-xb-line pl-2 text-[10px] font-black uppercase text-xb-text-muted">
+            Last 3 results
+          </span>
+          <div className="xb-noscroll flex min-w-0 flex-1 items-center gap-3 overflow-x-auto">
+            {recent.length === 0 ? (
+              <span className="text-[10px] text-xb-text-muted">Waiting for the first result…</span>
+            ) : (
+              recent.map((r) => (
+                <span key={r.id} className="shrink-0 whitespace-nowrap text-[10px] font-bold text-xb-text">
+                  <span className="text-xb-blue">{r.no}:</span> {r.home}{" "}
+                  <span className="text-xb-text-muted">vs</span> {r.away} {r.ft.h}:{r.ft.a}{" "}
+                  <span className="text-xb-text-muted">
+                    ({r.ht.h}:{r.ht.a})
+                  </span>
+                </span>
+              ))
+            )}
+          </div>
+        </div>
       </main>
 
       <Sheet open={streamOpen} onOpenChange={setStreamOpen}>
@@ -479,14 +508,15 @@ function VirtualPageInner() {
               maxHeight={320}
             />
           )}
-          <a
-            href={tab === "stream" ? STREAM_URL : TRACKER_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="flex w-full items-center justify-center gap-2 bg-xb-blue px-2 py-3 text-[11px] font-bold uppercase text-xb-on-dark"
+          <button
+            onClick={() => {
+              setStreamOpen(false);
+              setExpandOpen(true);
+            }}
+            className="flex w-full items-center justify-center gap-2 bg-xb-blue px-2 py-3 text-[11px] font-black uppercase text-xb-on-dark"
           >
-            <Maximize2 className="h-3.5 w-3.5" /> Open full {tab}
-          </a>
+            <Maximize2 className="h-3.5 w-3.5" /> Expand {tab}
+          </button>
         </SheetContent>
       </Sheet>
 
@@ -559,6 +589,52 @@ function VirtualPageInner() {
           )}
         </SheetContent>
       </Sheet>
+
+      {/* In-app expanded stream/tracker player — our palette, not the provider's */}
+      {expandOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-2 font-xb sm:p-6">
+          <div className="w-full max-w-[1100px] overflow-hidden rounded-xl border border-xb-line bg-xb-panel shadow-2xl">
+            <div className="flex items-center gap-2 bg-xb-header px-3 py-2">
+              <Play className="h-4 w-4 text-xb-green" />
+              <span className="text-[12px] font-black uppercase text-xb-on-dark">
+                Virtual soccer {tab}
+              </span>
+              <span className="text-[11px] font-bold text-xb-green">{clock}</span>
+              <div className="ml-auto flex items-center gap-1">
+                {(["stream", "tracker"] as const).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setTab(t)}
+                    className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase ${
+                      tab === t
+                        ? "bg-xb-blue text-xb-on-dark"
+                        : "bg-white/10 text-xb-on-dark-muted hover:bg-white/20"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setExpandOpen(false)}
+                  aria-label="Close player"
+                  className="ml-1 rounded bg-white/10 p-1 text-xb-on-dark hover:bg-white/20"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <ScaledEmbed
+              src={tab === "stream" ? STREAM_URL : TRACKER_URL}
+              title={tab === "stream" ? "Virtual soccer stream" : "Virtual soccer tracker"}
+              maxHeight={620}
+            />
+            <div className="flex items-center justify-between bg-xb-panel-alt px-3 py-1.5 text-[10px] font-bold text-xb-text">
+              <span>Next match #{featured?.no ?? "—"}</span>
+              <span className="text-xb-blue">Kickoff in {clock}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <MobileNav />
     </div>
