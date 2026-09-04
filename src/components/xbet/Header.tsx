@@ -56,8 +56,8 @@ export function Header() {
 
   return (
     <header className="font-xb">
-      <div className="rounded-b-none bg-xb-header md:rounded-b-xl">
-        <div className="mx-auto flex h-[40px] w-full max-w-[1440px] items-center justify-between px-2 sm:px-4">
+      <div className="mx-auto w-full max-w-[1440px] rounded-b-none bg-xb-header md:rounded-b-xl">
+        <div className="mx-auto flex h-[40px] w-full items-center justify-between px-2 sm:px-4">
         <Link to="/" className="flex items-center gap-0 text-xl font-black tracking-tight">
           <span className="text-xb-on-dark">BET</span>
           <span className="text-xb-blue-light">PLUS+</span>
