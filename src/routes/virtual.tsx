@@ -110,9 +110,9 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`flex h-full w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
+      className={`flex h-full min-h-[34px] w-full items-center justify-between gap-2 rounded-sm border border-xb-line/40 px-2.5 text-[11px] leading-none transition-colors ${
         active
-          ? "bg-xb-blue text-xb-on-dark"
+          ? "border-xb-blue bg-xb-blue text-xb-on-dark"
           : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
       }`}
     >
@@ -341,7 +341,7 @@ function VirtualPageInner() {
                     <div key={`${m.id}-${g.key}`} className="flex min-h-0 flex-col" style={{ flex: rows }}>
                       {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
                       <div
-                        className="grid flex-1 border-b border-xb-line"
+                        className="grid flex-1 gap-[2px] p-[2px]"
                         style={{
                           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
                           gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
