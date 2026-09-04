@@ -301,7 +301,7 @@ function VirtualPageInner() {
         )}
 
 
-        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:items-start lg:gap-2 lg:overflow-y-auto lg:pb-0">
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:items-stretch lg:gap-2 lg:overflow-hidden lg:pb-0">
           {matches.length === 0 && offer.isError && (
             <div className="col-span-full flex items-center justify-center gap-2 rounded-lg bg-xb-panel py-10 text-[12px] text-xb-text-muted">
               <AlertTriangle className="h-4 w-4 text-xb-red" />
