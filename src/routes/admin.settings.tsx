@@ -66,6 +66,21 @@ function SettingsPage() {
           </p>
         </Panel>
 
+        <Panel title="Payment backend">
+          <Field label="paymentsBase">
+            <input
+              className={inputCls}
+              value={String(s.paymentsBase ?? "")}
+              placeholder="https://your-backend.up.railway.app"
+              onChange={(e) => updateSettings({ paymentsBase: e.target.value.trim() })}
+            />
+          </Field>
+          <p className="mt-1 text-[11px] text-xb-text-muted">
+            Deposits, withdrawals and status checks are sent to this URL. No trailing slash needed.
+          </p>
+        </Panel>
+
+
         <Panel title="Danger zone">
           <p className="text-[11px] text-xb-text-muted">
             Resetting restores fresh demo data for users, agents, partners, bets, transactions and content.
