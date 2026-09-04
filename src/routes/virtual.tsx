@@ -317,7 +317,7 @@ function VirtualPageInner() {
           {matches.map((m, idx) => (
             <section
               key={m.id}
-              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-hidden ${
+              className={`flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-hidden ${
                 idx === 0 ? "border-xb-blue" : "border-xb-line"
               } ${idx === activeIdx ? "" : "hidden lg:flex"}`}
             >
