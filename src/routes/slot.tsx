@@ -161,7 +161,7 @@ function SlotPage() {
   }, [tab, query]);
 
   return (
-    <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
+    <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       <Header />
       <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-y-auto pb-16 pt-1 md:pb-4">
         {/* Breadcrumb / title bar */}

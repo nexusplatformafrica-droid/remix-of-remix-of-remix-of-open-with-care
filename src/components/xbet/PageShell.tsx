@@ -14,7 +14,7 @@ export function PageShell({
   children: ReactNode;
 }) {
   return (
-    <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
+    <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       <Header />
       <main
         className={

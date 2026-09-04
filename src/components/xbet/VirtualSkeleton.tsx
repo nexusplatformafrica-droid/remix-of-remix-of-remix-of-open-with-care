@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function VirtualSkeleton() {
   return (
-    <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
+    <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       {/* Header placeholder */}
       <div className="flex h-14 shrink-0 items-center gap-3 border-b border-xb-line bg-xb-header px-3">
         <Skeleton className="h-8 w-28 rounded-md bg-xb-on-dark/15" />
