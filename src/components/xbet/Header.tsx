@@ -173,8 +173,8 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="mt-0.5 h-[32px] rounded-none bg-xb-nav md:mt-1 md:h-[36px] md:rounded-xl">
-        <div className="xb-noscroll mx-auto flex h-full w-full max-w-[1440px] items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-2">
+      <nav className="mx-auto mt-0.5 h-[32px] w-full max-w-[1440px] rounded-none bg-xb-nav md:mt-1 md:h-[36px] md:rounded-xl">
+        <div className="xb-noscroll mx-auto flex h-full w-full items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-2">
         {navItems.map((item) => (
           <Link
             key={item.label}
