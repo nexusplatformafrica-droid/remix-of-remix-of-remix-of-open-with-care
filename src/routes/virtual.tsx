@@ -135,8 +135,9 @@ function GroupTitle({ children }: { children: React.ReactNode }) {
 /** Grid width per market group so long lists stay readable. */
 function columnsFor(group: VirtualMatch["groups"][number]) {
   const n = group.odds.length;
+  if (n <= 1) return 1;
   if (group.type === "Correct score") return 3;
-  if (n <= 3) return n || 1;
+  if (n <= 3) return n;
   return n % 2 === 0 ? 2 : 3;
 }
 
