@@ -95,6 +95,7 @@ function ScaledEmbed({
   );
 }
 
+/** Market row: name on the left, odd on the right — same rhythm as the reference sheet. */
 function Cell({
   name,
   odd,
@@ -109,14 +110,14 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`group flex h-full min-h-[32px] w-full flex-col items-center justify-center rounded-md border px-1 text-[9px] leading-none transition-all active:scale-[0.97] ${
+      className={`flex h-8 w-full items-center justify-between gap-1 border-r border-b border-xb-line px-2 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
-          ? "border-xb-blue bg-xb-blue text-xb-on-dark shadow-sm"
-          : "border-xb-line bg-xb-panel-alt text-xb-text-muted hover:border-xb-blue hover:bg-xb-odds-hover"
+          ? "bg-xb-blue text-xb-on-dark"
+          : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
       }`}
     >
-      <span className="w-full truncate text-center uppercase tracking-wide">{name}</span>
-      <span className={`mt-0.5 text-[11px] font-black ${active ? "text-xb-on-dark" : "text-xb-blue"}`}>
+      <span className="min-w-0 truncate text-left">{name}</span>
+      <span className={`shrink-0 font-bold ${active ? "text-xb-on-dark" : "text-xb-blue"}`}>
         {odd.toFixed(2)}
       </span>
     </button>
@@ -125,7 +126,7 @@ function Cell({
 
 function GroupTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shrink-0 border-y border-xb-line bg-xb-header/90 px-2 py-[1px] text-center text-[8px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
+    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-[3px] text-center text-[9px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
       {children}
     </div>
   );
@@ -133,9 +134,10 @@ function GroupTitle({ children }: { children: React.ReactNode }) {
 
 /** Grid width per market group so long lists stay readable. */
 function columnsFor(group: VirtualMatch["groups"][number]) {
+  const n = group.odds.length;
   if (group.type === "Correct score") return 3;
-  if (group.odds.length >= 5) return 5;
-  return Math.max(1, Math.min(3, group.odds.length));
+  if (n <= 3) return n || 1;
+  return n % 2 === 0 ? 2 : 3;
 }
 
 function VirtualPageInner() {
