@@ -189,6 +189,7 @@ export function Header() {
             {item.label}
           </Link>
         ))}
+        </div>
       </nav>
 
 
