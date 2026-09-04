@@ -54,7 +54,7 @@ export function VirtualBetSlip({
       </div>
 
       {sels.length === 0 ? (
-        <div className="flex flex-col items-center gap-1 bg-xb-panel-alt px-3 py-6 text-center">
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 bg-xb-panel-alt px-3 py-6 text-center">
           <AlertTriangle className="h-5 w-5 text-xb-blue" />
           <p className="text-[11px] font-bold text-xb-text">Your ticket is empty</p>
           <p className="text-[10px] text-xb-text-muted">Tap any odd to add it to this round's ticket.</p>
