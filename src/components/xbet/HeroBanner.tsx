@@ -16,7 +16,7 @@ export function HeroBanner() {
     <SlideCarousel
       slides={slides}
       ready={ready}
-      heightClass="h-[150px] sm:h-[195px] md:h-[250px]"
+      heightClass="h-[150px] sm:h-[190px] md:h-[215px] xl:h-[230px]"
     />
   );
 }

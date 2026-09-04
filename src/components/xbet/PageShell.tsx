@@ -19,8 +19,8 @@ export function PageShell({
       <main
         className={
           fullBleed
-            ? "mx-auto min-h-0 w-full max-w-[1440px] flex-1 overflow-hidden px-0 pb-16 pt-1 md:px-0 md:pb-0 md:pt-0"
-            : "mx-auto w-full max-w-[1440px] flex-1 overflow-y-auto px-0 pb-16 pt-1 md:px-3 md:pb-3"
+            ? "mx-auto min-h-0 w-full max-w-[1280px] flex-1 overflow-hidden px-0 pb-16 pt-1 md:px-0 md:pb-0 md:pt-0"
+            : "mx-auto w-full max-w-[1280px] flex-1 overflow-y-auto px-0 pb-16 pt-1 md:px-3 md:pb-3"
         }
       >
         {title && (
