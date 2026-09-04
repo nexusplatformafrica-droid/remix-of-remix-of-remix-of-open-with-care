@@ -2,7 +2,7 @@
 
 - [x] Open the uploaded BET PLUS+ project and get it running
 - [x] Replace the dead AllSportsAPI key with the new working key
-- [ ] Rewrite the settlement worker as a zero-config Cloudflare Worker
+- [x] Rewrite the settlement worker as a zero-config Cloudflare Worker
   - no Firebase admin service account
   - no secrets/env vars to configure in Cloudflare
   - cron-driven (every minute) instead of a 2-second poll, so the free
