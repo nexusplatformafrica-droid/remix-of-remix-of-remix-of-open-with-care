@@ -7,7 +7,7 @@
  */
 export function PageLoading() {
   return (
-    <div className="mx-auto w-full max-w-[1440px] animate-pulse bg-xb-page p-2 md:p-3">
+    <div className="mx-auto min-h-[100vh] w-full max-w-[1440px] animate-pulse bg-xb-page p-2 md:p-3">
       <div className="h-6 w-40 rounded bg-xb-odds" />
       <div className="mt-2 h-[120px] w-full rounded-lg bg-xb-odds md:h-[180px]" />
 

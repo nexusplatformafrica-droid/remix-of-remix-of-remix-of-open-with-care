@@ -44,14 +44,14 @@ const games = [
 
 export function GameTiles() {
   return (
-    <div className="mt-2 grid grid-cols-3 gap-1.5 px-1.5 sm:gap-2 sm:px-0 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 font-xb">
+    <div className="mt-2 grid grid-cols-2 gap-1.5 px-1.5 sm:grid-cols-3 sm:gap-2 sm:px-0 md:grid-cols-4 lg:grid-cols-5 font-xb">
       {games.map((g) => (
         <Link
           key={g.name}
           to={g.to}
           className="overflow-hidden rounded-md bg-xb-panel pb-0.5 text-left md:pb-2 shadow-sm ring-1 ring-xb-line transition-transform hover:-translate-y-0.5 hover:ring-xb-blue-light"
         >
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-[16/9] overflow-hidden">
             <img
               src={g.img}
               alt={g.alt}
