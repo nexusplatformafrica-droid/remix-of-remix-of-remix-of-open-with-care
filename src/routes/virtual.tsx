@@ -95,6 +95,7 @@ function ScaledEmbed({
   );
 }
 
+/** Market row: name on the left, odd on the right — same rhythm as the reference sheet. */
 function Cell({
   name,
   odd,
@@ -109,14 +110,14 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`group flex h-full min-h-[32px] w-full flex-col items-center justify-center rounded-md border px-1 text-[9px] leading-none transition-all active:scale-[0.97] ${
+      className={`flex h-8 w-full items-center justify-between gap-1 border-r border-b border-xb-line px-2 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
-          ? "border-xb-blue bg-xb-blue text-xb-on-dark shadow-sm"
-          : "border-xb-line bg-xb-panel-alt text-xb-text-muted hover:border-xb-blue hover:bg-xb-odds-hover"
+          ? "bg-xb-blue text-xb-on-dark"
+          : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
       }`}
     >
-      <span className="w-full truncate text-center uppercase tracking-wide">{name}</span>
-      <span className={`mt-0.5 text-[11px] font-black ${active ? "text-xb-on-dark" : "text-xb-blue"}`}>
+      <span className="min-w-0 truncate text-left">{name}</span>
+      <span className={`shrink-0 font-bold ${active ? "text-xb-on-dark" : "text-xb-blue"}`}>
         {odd.toFixed(2)}
       </span>
     </button>
@@ -125,7 +126,7 @@ function Cell({
 
 function GroupTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shrink-0 border-y border-xb-line bg-xb-header/90 px-2 py-[1px] text-center text-[8px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
+    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-[3px] text-center text-[9px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
       {children}
     </div>
   );
@@ -133,9 +134,11 @@ function GroupTitle({ children }: { children: React.ReactNode }) {
 
 /** Grid width per market group so long lists stay readable. */
 function columnsFor(group: VirtualMatch["groups"][number]) {
+  const n = group.odds.length;
+  if (n <= 1) return 1;
   if (group.type === "Correct score") return 3;
-  if (group.odds.length >= 5) return 5;
-  return Math.max(1, Math.min(3, group.odds.length));
+  if (n <= 3) return n;
+  return n % 2 === 0 ? 2 : 3;
 }
 
 function VirtualPageInner() {
@@ -298,7 +301,7 @@ function VirtualPageInner() {
         )}
 
 
-        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:overflow-hidden lg:pb-0">
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:items-start lg:gap-2 lg:overflow-y-auto lg:pb-0">
           {matches.length === 0 && offer.isError && (
             <div className="col-span-full flex items-center justify-center gap-2 rounded-lg bg-xb-panel py-10 text-[12px] text-xb-text-muted">
               <AlertTriangle className="h-4 w-4 text-xb-red" />
@@ -314,17 +317,17 @@ function VirtualPageInner() {
           {matches.map((m, idx) => (
             <section
               key={m.id}
-              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-lg border bg-xb-panel pb-1 shadow-sm lg:shrink ${
+              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-y-auto ${
                 idx === 0 ? "border-xb-blue" : "border-xb-line"
               } ${idx === activeIdx ? "" : "hidden lg:flex"}`}
 
             >
               <div
-                className={`sticky top-0 z-10 flex shrink-0 items-center gap-2 px-2 py-[2px] text-[11px] font-bold ${
+                className={`sticky top-0 z-10 flex shrink-0 items-center gap-2 px-2 py-1 text-[11px] font-bold ${
                   idx === 0 ? "bg-xb-blue text-xb-on-dark" : "bg-xb-header text-xb-on-dark"
                 }`}
               >
-                <span className="rounded bg-black/20 px-1">{m.no}</span>
+                <span className="border-r border-white/25 pr-2">{m.no}</span>
                 <span className="flex-1 truncate text-center">
                   {m.home} <span className="opacity-70">vs</span> {m.away}
                 </span>
@@ -332,10 +335,11 @@ function VirtualPageInner() {
               </div>
 
               {m.groups.map((g, gi) => (
-                <div key={`${m.id}-${g.key}`} className="flex flex-col lg:flex-1">
+                <div key={`${m.id}-${g.key}`} className="flex flex-col">
+
                   {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
                   <div
-                    className="grid gap-1 p-1 lg:h-full lg:flex-1 lg:auto-rows-fr"
+                    className="grid border-b border-xb-line"
                     style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
                   >
 
