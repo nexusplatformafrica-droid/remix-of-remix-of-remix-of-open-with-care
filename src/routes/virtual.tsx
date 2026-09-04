@@ -261,7 +261,7 @@ function VirtualPageInner() {
       placing={placing}
       loggedIn={!!user}
       balance={balance}
-      listClassName={isMobile ? "max-h-[45dvh]" : "max-h-40"}
+      listClassName={isMobile ? "max-h-[45dvh]" : "flex-1 min-h-0"}
     />
   );
 
