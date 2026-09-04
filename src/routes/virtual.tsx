@@ -316,17 +316,17 @@ function VirtualPageInner() {
           {matches.map((m, idx) => (
             <section
               key={m.id}
-              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-lg border bg-xb-panel pb-1 shadow-sm lg:shrink ${
+              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-y-auto ${
                 idx === 0 ? "border-xb-blue" : "border-xb-line"
               } ${idx === activeIdx ? "" : "hidden lg:flex"}`}
 
             >
               <div
-                className={`sticky top-0 z-10 flex shrink-0 items-center gap-2 px-2 py-[2px] text-[11px] font-bold ${
+                className={`sticky top-0 z-10 flex shrink-0 items-center gap-2 px-2 py-1 text-[11px] font-bold ${
                   idx === 0 ? "bg-xb-blue text-xb-on-dark" : "bg-xb-header text-xb-on-dark"
                 }`}
               >
-                <span className="rounded bg-black/20 px-1">{m.no}</span>
+                <span className="border-r border-white/25 pr-2">{m.no}</span>
                 <span className="flex-1 truncate text-center">
                   {m.home} <span className="opacity-70">vs</span> {m.away}
                 </span>
@@ -334,7 +334,8 @@ function VirtualPageInner() {
               </div>
 
               {m.groups.map((g, gi) => (
-                <div key={`${m.id}-${g.key}`} className="flex flex-col lg:flex-1">
+                <div key={`${m.id}-${g.key}`} className="flex flex-col">
+
                   {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
                   <div
                     className="grid border-b border-xb-line"
