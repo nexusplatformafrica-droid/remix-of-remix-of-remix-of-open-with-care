@@ -213,6 +213,7 @@ const defaultSettings = (): SiteSettings => ({
   mobileMoneyProviders: "MTN Mobile Money, Airtel Money",
   license: "NLGRB/OP/0142",
   allsportsApiKey: "eb3e6be456f441dad3f93fbbfc236b316ba8c95472f2abe641171f95902edcee",
+  paymentsBase: "https://function-bun-production-e268.up.railway.app",
   address: "Plot 24 Kampala Road, Kampala, Uganda",
 });
 
