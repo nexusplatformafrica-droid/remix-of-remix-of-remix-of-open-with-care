@@ -10,6 +10,7 @@ import {
   Receipt,
   Settings,
   Store,
+  Trash2,
   Ticket,
   UserRound,
   Users,
@@ -31,6 +32,7 @@ const links = [
   { to: "/admin/wallet", label: "Wallet", icon: Banknote },
   { to: "/admin/content", label: "Contents", icon: Image },
   { to: "/admin/affiliates", label: "Affiliates", icon: UserRound },
+  { to: "/admin/cleanup", label: "Cleanup", icon: Trash2 },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 

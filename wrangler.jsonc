@@ -1,0 +1,21 @@
+{
+  // Deploy the website itself to Cloudflare (Workers, with static assets served
+  // from the same deployment — this is what "Workers & Pages" uses today).
+  //
+  //   bun run build          -> produces .output/
+  //   bunx wrangler deploy   -> ships it
+  //
+  // Nothing here is secret; there is nothing extra to configure.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "betplus",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".output/public",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
