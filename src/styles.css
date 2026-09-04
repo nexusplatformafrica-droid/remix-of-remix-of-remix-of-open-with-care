@@ -19,6 +19,30 @@
  */
 
 @theme inline {
+  --color-xb-header: var(--xb-header);
+  --color-xb-nav: var(--xb-nav);
+  --color-xb-page: var(--xb-page);
+  --color-xb-panel: var(--xb-panel);
+  --color-xb-panel-alt: var(--xb-panel-alt);
+  --color-xb-line: var(--xb-line);
+  --color-xb-blue: var(--xb-blue);
+  --color-xb-blue-light: var(--xb-blue-light);
+  --color-xb-green: var(--xb-green);
+  --color-xb-green-dark: var(--xb-green-dark);
+  --color-xb-red: var(--xb-red);
+  --color-xb-odds: var(--xb-odds);
+  --color-xb-odds-hover: var(--xb-odds-hover);
+  --color-xb-text: var(--xb-text);
+  --color-xb-text-muted: var(--xb-text-muted);
+  --color-xb-on-dark: var(--xb-on-dark);
+  --color-xb-on-dark-muted: var(--xb-on-dark-muted);
+  --color-xb-bar: var(--xb-bar);
+  --color-xb-bar-alt: var(--xb-bar-alt);
+  --color-xb-bar-line: var(--xb-bar-line);
+  --color-xb-bar-field: var(--xb-bar-field);
+  --color-xb-bar-accent: var(--xb-bar-accent);
+  --font-xb: "Roboto", "Helvetica Neue", Arial, sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -63,6 +87,31 @@
 
 :root {
   --radius: 0.625rem;
+  --xb-header: oklch(0.32 0.062 250);
+  --xb-nav: oklch(0.38 0.072 250);
+  --xb-page: oklch(0.91 0.008 250);
+  --xb-panel: oklch(1 0 0);
+  --xb-panel-alt: oklch(0.965 0.008 250);
+  --xb-line: oklch(0.89 0.012 250);
+  --xb-blue: oklch(0.5 0.12 250);
+  --xb-blue-light: oklch(0.62 0.13 245);
+  --xb-green: oklch(0.68 0.16 132);
+  --xb-green-dark: oklch(0.6 0.15 132);
+  --xb-turf-a: oklch(0.55 0.13 145);
+  --xb-turf-b: oklch(0.5 0.12 145);
+  --xb-red: oklch(0.58 0.19 25);
+  --xb-odds: oklch(0.93 0.017 245);
+  --xb-odds-hover: oklch(0.87 0.035 245);
+  --xb-text: oklch(0.28 0.02 250);
+  --xb-text-muted: oklch(0.55 0.02 250);
+  --xb-on-dark: oklch(1 0 0);
+  --xb-on-dark-muted: oklch(0.86 0.02 250);
+  --xb-bar: oklch(0.42 0.09 250);
+  --xb-bar-alt: oklch(0.34 0.075 250);
+  --xb-bar-line: oklch(0.5 0.09 250);
+  --xb-bar-field: oklch(0.3 0.07 250);
+  --xb-bar-accent: oklch(0.85 0.2 128);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
@@ -135,10 +184,389 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--xb-line);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--xb-text-muted);
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+/* Odds drift animation — flashes when a bookmaker price moves during a silent refresh. */
+@keyframes odds-up {
+  0% {
+    background-color: var(--xb-green);
+    color: var(--xb-on-dark);
+    transform: translateY(2px);
+  }
+  100% {
+    background-color: inherit;
+    color: inherit;
+    transform: translateY(0);
+  }
+}
+
+@keyframes odds-down {
+  0% {
+    background-color: var(--xb-red);
+    color: var(--xb-on-dark);
+    transform: translateY(-2px);
+  }
+  100% {
+    background-color: inherit;
+    color: inherit;
+    transform: translateY(0);
+  }
+}
+
+@utility odds-flash-up {
+  animation: odds-up 1.1s ease-out;
+}
+
+@utility odds-flash-down {
+  animation: odds-down 1.1s ease-out;
+}
+
+@utility xb-slimscroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--xb-blue) 55%, transparent) transparent;
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: color-mix(in oklab, var(--xb-blue) 55%, transparent);
+    border-radius: 999px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--xb-blue);
+  }
+}
+
+@utility xb-noscroll {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Aviator crash game
+ * Scoped dark arcade palette + building blocks used only by /aviator.
+ * ------------------------------------------------------------------ */
+
+@theme inline {
+  --color-elevated: var(--elevated);
+  --color-success: var(--success);
+  --color-low: var(--mult-low);
+  --color-mid: var(--mult-mid);
+  --color-high: var(--mult-high);
+  --font-display: "Chakra Petch", "Roboto", sans-serif;
+}
+
+:root {
+  --elevated: oklch(0.28 0.02 265);
+  --success: oklch(0.72 0.17 150);
+  --mult-low: oklch(0.72 0.13 235);
+  --mult-mid: oklch(0.63 0.2 300);
+  --mult-high: oklch(0.62 0.24 340);
+}
+
+.aviator-root {
+  /* Tailwind resolves --color-* at :root, so the game palette overrides the
+     --color-* variables directly instead of the raw tokens. */
+  --color-background: oklch(0.15 0.014 265);
+  --color-foreground: oklch(0.97 0.004 250);
+  --color-card: oklch(0.2 0.016 265);
+  --color-card-foreground: oklch(0.97 0.004 250);
+  --color-popover: oklch(0.2 0.016 265);
+  --color-popover-foreground: oklch(0.97 0.004 250);
+  --color-primary: oklch(0.68 0.19 30);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-secondary: oklch(0.3 0.02 265);
+  --color-secondary-foreground: oklch(0.97 0.004 250);
+  --color-muted: oklch(0.3 0.02 265);
+  --color-muted-foreground: oklch(0.75 0.02 260);
+  --color-accent: oklch(0.3 0.02 265);
+  --color-accent-foreground: oklch(0.97 0.004 250);
+  --color-destructive: oklch(0.62 0.21 25);
+  --color-destructive-foreground: oklch(0.99 0 0);
+  --color-border: oklch(1 0 0 / 12%);
+  --color-input: oklch(1 0 0 / 14%);
+  --color-elevated: oklch(0.26 0.018 265);
+
+  /* @theme inline utilities read the raw tokens, so mirror the palette there. */
+  --background: oklch(0.15 0.014 265);
+  --foreground: oklch(0.97 0.004 250);
+  --card: oklch(0.2 0.016 265);
+  --card-foreground: oklch(0.97 0.004 250);
+  --popover: oklch(0.2 0.016 265);
+  --popover-foreground: oklch(0.97 0.004 250);
+  --primary: oklch(0.68 0.19 30);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.3 0.02 265);
+  --secondary-foreground: oklch(0.97 0.004 250);
+  --muted: oklch(0.3 0.02 265);
+  --muted-foreground: oklch(0.75 0.02 260);
+  --accent: oklch(0.3 0.02 265);
+  --accent-foreground: oklch(0.97 0.004 250);
+  --destructive: oklch(0.62 0.21 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --elevated: oklch(0.26 0.018 265);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: "Chakra Petch", var(--font-xb);
+}
+
+@keyframes propeller-spin {
+  from {
+    transform: translate(-50%, -50%) rotateX(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(360deg);
+  }
+}
+
+@keyframes loader-fly {
+  0% {
+    transform: translate(-120%, 40%) rotate(-4deg);
+  }
+  50% {
+    transform: translate(0%, -10%) rotate(-10deg);
+  }
+  100% {
+    transform: translate(120%, 40%) rotate(-4deg);
+  }
+}
+
+@keyframes loader-bar {
+  from {
+    width: 4%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@utility panel-surface {
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  overflow: hidden;
+}
+
+@utility neon-text {
+  text-shadow:
+    0 0 12px rgba(255, 255, 255, 0.35),
+    0 0 34px rgba(255, 90, 40, 0.35);
+}
+
+@utility chip-mult {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background-color: color-mix(in oklab, var(--color-elevated) 80%, transparent);
+}
+
+@utility stepper-input {
+  width: 100%;
+  min-width: 0;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-elevated);
+  padding: 0.3rem 0.5rem;
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-foreground);
+  outline: none;
+}
+
+@utility btn-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary-foreground);
+  transition: transform 0.1s ease;
+  &:active {
+    transform: scale(0.98);
+  }
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+@utility btn-bet {
+  @apply btn-game;
+  background: linear-gradient(180deg, oklch(0.74 0.19 145), oklch(0.6 0.17 145));
+  box-shadow: 0 6px 20px oklch(0.6 0.17 145 / 35%);
+}
+
+@utility btn-cash {
+  @apply btn-game;
+  background: linear-gradient(180deg, oklch(0.82 0.17 80), oklch(0.7 0.17 55));
+  box-shadow: 0 6px 20px oklch(0.7 0.17 55 / 35%);
+}
+
+@utility btn-cancel {
+  @apply btn-game;
+  background: linear-gradient(180deg, oklch(0.62 0.2 25), oklch(0.52 0.19 25));
+  box-shadow: 0 6px 20px oklch(0.55 0.19 25 / 30%);
+}
+
+/* ---- BET PLUS+ milky player loader (macOS-style glass) ---- */
+@keyframes bp-shimmer {
+  0% {
+    background-position: -180% 0;
+  }
+  100% {
+    background-position: 180% 0;
+  }
+}
+
+@keyframes bp-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.9;
+  }
+}
+
+@keyframes bp-milky-drift {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.25);
+  }
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1.1);
+  }
+}
+
+@keyframes bp-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@utility bp-glass-btn {
+  border-radius: 9999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, white 22%, transparent),
+    color-mix(in oklab, white 6%, transparent)
+  );
+  border: 1px solid color-mix(in oklab, white 20%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 35%, transparent),
+    0 4px 14px -6px rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(10px) saturate(160%);
+  transition:
+    transform 0.18s cubic-bezier(0.22, 1.2, 0.36, 1),
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+@utility bp-glass-btn-hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, white 34%, transparent),
+    color-mix(in oklab, white 12%, transparent)
+  );
+  transform: scale(1.06);
+}
+
+@utility bp-wordmark-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    color-mix(in oklab, white 62%, transparent) 0%,
+    white 42%,
+    color-mix(in oklab, white 62%, transparent) 70%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: bp-shimmer 2.4s linear infinite;
+}
+
+@keyframes bp-slide {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+@keyframes bp-letter-drop {
+  0% {
+    transform: translateY(-70%) scale(0.9);
+    opacity: 0;
+    filter: blur(6px);
+  }
+  55% {
+    transform: translateY(8%) scale(1.04);
+    opacity: 1;
+    filter: blur(0);
+  }
+  75% {
+    transform: translateY(-4%) scale(0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes plane-prop-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
