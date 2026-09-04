@@ -372,7 +372,7 @@ function VirtualPageInner() {
             </section>
           ))}
 
-          <aside className="hidden min-h-0 flex-col gap-2 lg:flex lg:overflow-y-auto">
+          <aside className="hidden h-full min-h-0 flex-col gap-2 lg:flex lg:overflow-y-auto">
             <div className="overflow-hidden rounded-lg shadow-sm">
               <div className="grid grid-cols-2">
                 {(["stream", "tracker"] as const).map((t) => (
