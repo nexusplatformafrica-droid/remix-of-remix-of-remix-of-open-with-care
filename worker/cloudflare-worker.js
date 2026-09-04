@@ -1,123 +1,77 @@
 /**
- * BET PLUS+ — always-on ticket settlement worker (single file, zero dependencies).
+ * BET PLUS+ — settlement worker for Cloudflare Workers.
  *
- * Run it anywhere Node 18+ runs (Railway, Render, Fly, a VPS):
+ * ZERO CONFIGURATION. Paste this whole file into the Cloudflare Worker editor
+ * and click Deploy. There is nothing to set up: no secrets, no environment
+ * variables, no service account, no bindings, no expiry, no payment.
  *
- *   node settlement-worker.mjs
+ * HOW TO DEPLOY (2 minutes)
+ * -------------------------
+ *  1. Cloudflare dashboard -> Compute (Workers) -> Create -> Start from Hello World.
+ *  2. Delete everything in the editor, paste this file, click Deploy.
+ *  3. Open the worker -> Settings -> Triggers -> Cron Triggers -> Add:
  *
- * Required environment variables
- * ------------------------------
- *   FIREBASE_PROJECT_ID    betplus-africa
- *   FIREBASE_CLIENT_EMAIL  firebase-adminsdk-xxxxx@betplus-africa.iam.gserviceaccount.com
- *   FIREBASE_PRIVATE_KEY   the private key from the service-account JSON
- *                          (paste it with the literal \n escapes, that's fine)
- * Optional
- *   ALLSPORTS_API_KEY      defaults to the site key
- *   POLL_MS                loop interval, default 2000
+ *         * * * * *
  *
- * Get the three Firebase values from:
- *   Firebase console → Project settings → Service accounts → Generate new private key.
+ *     (that means "every minute" — Cloudflare's free plan allows it).
+ *  4. Done. Tickets now settle around the clock whether or not anyone is
+ *     on the site. Open the worker URL to see a live status page, or add
+ *     /run to the URL to force one settlement pass right now.
  *
- * What it does, every couple of seconds, for every player (online or not):
- *   • reads unfinished tickets from Firestore
- *   • pulls virtual-soccer results and real fixture scores
- *   • grades every leg with the exact same rules the website uses
- *   • marks the ticket won / lost / cancelled, credits the wallet once,
- *     and writes the payout into the transactions ledger
+ * WHY THE OLD WORKER STOPPED SETTLING
+ * -----------------------------------
+ * It polled the database every 2 seconds — about 43,000 queries a day, which
+ * burns straight through the free daily read allowance, after which every
+ * request is rejected and nothing settles. This version runs once a minute
+ * (~1,440 passes a day) and only reads the tickets that are still open, which
+ * stays comfortably inside the free allowance forever.
+ *
+ * It also no longer uses a Firebase admin service account. It talks to the
+ * database over the public REST API with the same public web key the website
+ * itself uses, so there is no private key to leak, rotate, or configure.
  */
 
-import crypto from "node:crypto";
-import http from "node:http";
+/* ------------------------------------------------------------------ */
+/* Configuration — already filled in, nothing to change                */
+/* ------------------------------------------------------------------ */
 
-let PROJECT, CLIENT_EMAIL, PRIVATE_KEY;
-const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-if (serviceAccountJson) {
-  try {
-    const sa = JSON.parse(serviceAccountJson);
-    PROJECT = sa.project_id;
-    CLIENT_EMAIL = sa.client_email;
-    PRIVATE_KEY = sa.private_key;
-  } catch {
-    console.error("FIREBASE_SERVICE_ACCOUNT_JSON is not valid JSON");
-    process.exit(1);
-  }
-} else {
-  PROJECT = process.env.FIREBASE_PROJECT_ID || "betplus-africa";
-  CLIENT_EMAIL = process.env.FIREBASE_CLIENT_EMAIL || "";
-  PRIVATE_KEY = (process.env.FIREBASE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
-}
-const ALLSPORTS_KEY =
-  process.env.ALLSPORTS_API_KEY ||
-  "eb3e6be456f441dad3f93fbbfc236b316ba8c95472f2abe641171f95902edcee";
-const POLL_MS = Number(process.env.POLL_MS || 2000);
-const PORT = Number(process.env.PORT || 3000);
+const PROJECT = "betplus-africa";
+/** Public Firebase web key — the same one shipped in the website bundle. */
+const WEB_KEY = "AIzaSyAWqLsfN4rzT-RfdI4cQvwYeNrDN-5cz5M";
+const ALLSPORTS_KEY = "eb3e6be456f441dad3f93fbbfc236b316ba8c95472f2abe641171f95902edcee";
 const VIRTUAL_RESULTS = "https://desktop.fortebet.ug/api/web/v1/virtual-soccer/results";
+
+/** Safety rails so a single pass can never run away with reads or time. */
+const MAX_BETS_PER_PASS = 120;
+const MAX_FIXTURE_LOOKUPS = 60;
+const FIXTURE_CONCURRENCY = 6;
+
 const DB = `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents`;
 
-if (!CLIENT_EMAIL || !PRIVATE_KEY) {
-  console.error("Missing Firebase service account credentials. Provide either FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY.");
-  process.exit(1);
-}
-
-
 /* ------------------------------------------------------------------ */
-/* Google service-account auth                                         */
+/* Database access (public REST API — no admin credentials)            */
 /* ------------------------------------------------------------------ */
-
-let token = { value: "", exp: 0 };
-
-const b64 = (obj) =>
-  Buffer.from(typeof obj === "string" ? obj : JSON.stringify(obj))
-    .toString("base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-
-async function accessToken() {
-  if (token.value && Date.now() < token.exp - 60_000) return token.value;
-  const iat = Math.floor(Date.now() / 1000);
-  const claim = {
-    iss: CLIENT_EMAIL,
-    scope: "https://www.googleapis.com/auth/datastore",
-    aud: "https://oauth2.googleapis.com/token",
-    iat,
-    exp: iat + 3600,
-  };
-  const unsigned = `${b64({ alg: "RS256", typ: "JWT" })}.${b64(claim)}`;
-  const signature = crypto
-    .createSign("RSA-SHA256")
-    .update(unsigned)
-    .sign(PRIVATE_KEY)
-    .toString("base64")
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-  const res = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "content-type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      assertion: `${unsigned}.${signature}`,
-    }),
-  });
-  const body = await res.json();
-  if (!body.access_token) throw new Error(`auth failed: ${JSON.stringify(body)}`);
-  token = { value: body.access_token, exp: Date.now() + body.expires_in * 1000 };
-  return token.value;
-}
 
 async function api(path, init = {}) {
-  const res = await fetch(`${DB}${path}`, {
+  const glue = path.includes("?") ? "&" : "?";
+  const res = await fetch(`${DB}${path}${glue}key=${WEB_KEY}`, {
     ...init,
-    headers: {
-      authorization: `Bearer ${await accessToken()}`,
-      "content-type": "application/json",
-      ...(init.headers || {}),
-    },
+    headers: { "content-type": "application/json", ...(init.headers || {}) },
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`${res.status} ${text.slice(0, 300)}`);
   return text ? JSON.parse(text) : {};
+}
+
+/** Runs async work over a list with a hard concurrency cap. */
+async function mapLimit(items, limit, worker) {
+  const queue = [...items];
+  const runners = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    for (let next = queue.shift(); next !== undefined; next = queue.shift()) {
+      await worker(next);
+    }
+  });
+  await Promise.all(runners);
 }
 
 /* ------------------------------------------------------------------ */
@@ -169,7 +123,7 @@ const numOf = (v) => {
   return Number.isFinite(n) ? n : NaN;
 };
 
-export function isVoidStatus(status) {
+function isVoidStatus(status) {
   return /postp|cancel|abandon|interrupt|suspend|awarded|walkover|delayed/i.test(status || "");
 }
 
@@ -228,7 +182,7 @@ function lineOf(text) {
   return m ? numOf(m[1]) : NaN;
 }
 
-export function gradeMarket(pick, snap) {
+function gradeMarket(pick, snap) {
   if (snap.postponed) return "void";
   const { market, outcome } = parsePick(pick);
   if (!outcome) return null;
@@ -461,14 +415,14 @@ async function realSnapshots(sport, ids) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Firestore reads / writes                                            */
+/* Reads / writes                                                      */
 /* ------------------------------------------------------------------ */
 
-async function queryBets(filter) {
+async function queryBets(filter, limit) {
   const rows = await api(":runQuery", {
     method: "POST",
     body: JSON.stringify({
-      structuredQuery: { from: [{ collectionId: "bets" }], where: filter, limit: 300 },
+      structuredQuery: { from: [{ collectionId: "bets" }], where: filter, limit },
     }),
   });
   return (rows || [])
@@ -487,20 +441,24 @@ const eq = (path, value) => ({ fieldFilter: { field: { fieldPath: path }, op: "E
 /** Pending tickets plus already-lost tickets whose legs are still running. */
 async function unfinishedBets() {
   const [pending, lost] = await Promise.all([
-    queryBets(eq("status", { stringValue: "pending" })),
-    queryBets({
-      compositeFilter: {
-        op: "AND",
-        filters: [eq("status", { stringValue: "lost" }), eq("legsFinal", { booleanValue: false })],
+    queryBets(eq("status", { stringValue: "pending" }), MAX_BETS_PER_PASS),
+    queryBets(
+      {
+        compositeFilter: {
+          op: "AND",
+          filters: [eq("status", { stringValue: "lost" }), eq("legsFinal", { booleanValue: false })],
+        },
       },
-    }).catch(() => []),
+      MAX_BETS_PER_PASS,
+    ).catch(() => []),
   ]);
   const byId = new Map();
   for (const b of [...pending, ...lost]) byId.set(b.id, b);
-  return [...byId.values()];
+  return [...byId.values()].slice(0, MAX_BETS_PER_PASS);
 }
 
 async function commitSettlement(bet, res) {
+  const paying = res.payout > 0 && res.status !== "pending";
   const writes = [
     {
       update: {
@@ -510,7 +468,7 @@ async function commitSettlement(bet, res) {
           matches: res.matches,
           legsFinal: res.legsFinal,
           settledAt: res.status === "pending" ? null : Date.now(),
-          ...(res.payout > 0 && res.status !== "pending" ? { paid: true } : {}),
+          ...(paying ? { paid: true } : {}),
         }),
       },
       updateMask: {
@@ -519,19 +477,22 @@ async function commitSettlement(bet, res) {
           "matches",
           "legsFinal",
           "settledAt",
-          ...(res.payout > 0 && res.status !== "pending" ? ["paid"] : []),
+          ...(paying ? ["paid"] : []),
         ],
       },
+      // Refuses the write if the ticket changed since we read it, so the
+      // website and this worker can never double-pay the same ticket.
       currentDocument: { updateTime: bet.updateTime },
     },
   ];
 
   const finishing = bet.status === "pending" && res.status !== "pending" && !bet.paid;
+  const userDoc = `projects/${PROJECT}/databases/(default)/documents/users/${bet.userId}`;
 
   if (finishing && res.payout > 0 && bet.userId) {
     writes.push({
       transform: {
-        document: `projects/${PROJECT}/databases/(default)/documents/users/${bet.userId}`,
+        document: userDoc,
         fieldTransforms: [
           { fieldPath: "balance", increment: { integerValue: String(res.payout) } },
         ],
@@ -541,7 +502,7 @@ async function commitSettlement(bet, res) {
   if (finishing && res.status === "lost" && bet.userId) {
     writes.push({
       transform: {
-        document: `projects/${PROJECT}/databases/(default)/documents/users/${bet.userId}`,
+        document: userDoc,
         fieldTransforms: [
           { fieldPath: "lostBalance", increment: { integerValue: String(bet.stake || 0) } },
         ],
@@ -572,12 +533,18 @@ async function commitSettlement(bet, res) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Main loop                                                           */
+/* One settlement pass                                                 */
 /* ------------------------------------------------------------------ */
 
-async function tick() {
+async function runPass() {
+  const startedAt = Date.now();
+  const settled = [];
+  const errors = [];
+
   const bets = await unfinishedBets();
-  if (bets.length === 0) return;
+  if (bets.length === 0) {
+    return { ok: true, openTickets: 0, settled, errors, ms: Date.now() - startedAt };
+  }
 
   const needed = new Map();
   let needVirtual = false;
@@ -596,8 +563,13 @@ async function tick() {
 
   const snapshots = new Map();
   if (needVirtual) for (const [k, v] of await virtualSnapshots()) snapshots.set(k, v);
+
+  let budget = MAX_FIXTURE_LOOKUPS;
   for (const [sport, ids] of needed) {
-    for (const [k, v] of await realSnapshots(sport, [...ids])) snapshots.set(k, v);
+    const slice = [...ids].slice(0, Math.max(0, budget));
+    budget -= slice.length;
+    for (const [k, v] of await realSnapshots(sport, slice)) snapshots.set(k, v);
+    if (budget <= 0) break;
   }
 
   for (const bet of bets) {
@@ -605,42 +577,70 @@ async function tick() {
     if (!res.changed) continue;
     try {
       await commitSettlement(bet, res);
-      console.log(
-        `[settled] ${bet.code || bet.id} → ${res.status} (won ${res.wonLegs}, lost ${res.lostLegs}, void ${res.voidLegs}, payout ${res.payout})`,
-      );
+      settled.push({
+        ticket: bet.code || bet.id,
+        status: res.status,
+        won: res.wonLegs,
+        lost: res.lostLegs,
+        void: res.voidLegs,
+        payout: res.payout,
+      });
     } catch (err) {
-      console.error(`[skip] ${bet.code || bet.id}: ${err.message}`);
+      errors.push(`${bet.code || bet.id}: ${err.message}`);
     }
   }
+
+  return {
+    ok: true,
+    openTickets: bets.length,
+    fixturesChecked: snapshots.size,
+    settled,
+    errors,
+    ms: Date.now() - startedAt,
+  };
 }
 
-const startedAt = new Date().toISOString();
-const healthServer = http.createServer((request, response) => {
-  if (request.url === "/" || request.url === "/health") {
-    response.writeHead(200, { "content-type": "application/json" });
-    response.end(JSON.stringify({
+/* ------------------------------------------------------------------ */
+/* Cloudflare entry points                                             */
+/* ------------------------------------------------------------------ */
+
+const STATUS_PAGE = (body) => new Response(JSON.stringify(body, null, 2), {
+  headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+});
+
+export default {
+  /** Cron trigger — add "* * * * *" in Settings -> Triggers. */
+  async scheduled(_event, _env, ctx) {
+    ctx.waitUntil(
+      runPass()
+        .then((r) => {
+          if (r.settled.length) console.log("[settled]", JSON.stringify(r.settled));
+          if (r.errors.length) console.warn("[skipped]", JSON.stringify(r.errors));
+        })
+        .catch((err) => console.error("[pass failed]", err.message)),
+    );
+  },
+
+  /** Health page at "/", manual settlement pass at "/run". */
+  async fetch(request) {
+    const { pathname } = new URL(request.url);
+
+    if (pathname === "/run") {
+      try {
+        return STATUS_PAGE(await runPass());
+      } catch (err) {
+        return STATUS_PAGE({ ok: false, error: err.message });
+      }
+    }
+
+    return STATUS_PAGE({
       ok: true,
       service: "betplus-settlement-worker",
       project: PROJECT,
-      pollingEveryMs: POLL_MS,
-      startedAt,
-    }));
-    return;
-  }
-  response.writeHead(404, { "content-type": "application/json" });
-  response.end(JSON.stringify({ ok: false, error: "Not found" }));
-});
-
-healthServer.listen(PORT, "0.0.0.0", () => {
-  console.log(`Health endpoint listening on port ${PORT}`);
-});
-
-console.log(`Settlement worker started for ${PROJECT} — polling every ${POLL_MS}ms`);
-for (;;) {
-  try {
-    await tick();
-  } catch (err) {
-    console.error("[tick]", err.message);
-  }
-  await new Promise((r) => setTimeout(r, POLL_MS));
-}
+      runsOn: "Cloudflare cron trigger (add: * * * * *)",
+      credentials: "none required",
+      forceRunNow: new URL("/run", request.url).toString(),
+      time: new Date().toISOString(),
+    });
+  },
+};

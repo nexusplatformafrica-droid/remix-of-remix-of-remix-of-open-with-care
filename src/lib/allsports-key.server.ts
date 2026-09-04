@@ -7,7 +7,7 @@
  */
 import { firebaseConfig } from "./firebase-config";
 
-const DEFAULT_KEY = "9e1d457ef257f5c370a7d19fc5b2b2746a3e6b9058a0e60f8ce40cb58fadb966";
+const DEFAULT_KEY = "eb3e6be456f441dad3f93fbbfc236b316ba8c95472f2abe641171f95902edcee";
 
 let cached: { at: number; key: string } | null = null;
 
