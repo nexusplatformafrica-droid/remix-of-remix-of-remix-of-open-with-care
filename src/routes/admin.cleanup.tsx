@@ -62,7 +62,7 @@ function CleanupPage() {
         <Stat
           label="Saved scores (completed)"
           value={counts ? String(counts.completedLegScores) : "—"}
-          tone="primary"
+          tone="blue"
         />
         <Stat
           label="Worker ledger rows"
