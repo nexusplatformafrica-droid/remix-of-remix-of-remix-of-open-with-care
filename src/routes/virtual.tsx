@@ -391,22 +391,19 @@ function VirtualPageInner() {
                 src={tab === "stream" ? STREAM_URL : TRACKER_URL}
                 title={tab === "stream" ? "Virtual soccer stream" : "Virtual soccer tracker"}
               />
-              <div className="grid grid-cols-2">
-                <a
-                  href={tab === "stream" ? STREAM_URL : TRACKER_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-1.5 bg-xb-blue px-2 py-1.5 text-[11px] font-bold uppercase text-xb-on-dark"
-                >
-                  <Maximize2 className="h-3.5 w-3.5" /> Expand
-                </a>
-                <button
-                  onClick={() => setResultsOpen(true)}
-                  className="flex w-full items-center justify-center gap-1.5 bg-xb-header px-2 py-1.5 text-[11px] font-bold uppercase text-xb-on-dark"
-                >
-                  <ListOrdered className="h-3.5 w-3.5 text-xb-blue" /> Results
-                </button>
-              </div>
+              <button
+                onClick={() => setExpandOpen(true)}
+                className="flex w-full items-center justify-center gap-1.5 bg-xb-blue px-2 py-2 text-[11px] font-black uppercase text-xb-on-dark transition-colors hover:bg-xb-blue-light"
+              >
+                <Maximize2 className="h-3.5 w-3.5" /> Expand {tab}
+              </button>
+              <button
+                onClick={() => setResultsOpen(true)}
+                className="flex w-full items-center justify-center gap-1.5 bg-xb-header px-2 py-1.5 text-[11px] font-bold uppercase text-xb-on-dark"
+              >
+                <ListOrdered className="h-3.5 w-3.5 text-xb-blue" /> Results
+              </button>
+
             </div>
 
             {slipPanel}
