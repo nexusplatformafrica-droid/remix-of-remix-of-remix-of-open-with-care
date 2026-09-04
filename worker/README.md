@@ -1,68 +1,78 @@
 # Always-on settlement worker
 
 `cloudflare-worker.js` settles every player's tickets around the clock. The
-player does not need the site open, does not need to be logged in, and does not
+player does not need the site open, does not need to be logged in and does not
 need to be online. When they come back, their wallet is already credited and the
 ticket already reads won / lost / void.
 
+> Paste **`worker/cloudflare-worker.js`** into Cloudflare — not this README.
+> This file is documentation, pasting it gives `Invalid or unexpected token`.
+
 ## Deploy on Cloudflare (2 minutes, nothing to configure)
 
-1. Cloudflare dashboard → **Compute (Workers)** → **Create** → *Start from Hello World*.
-2. Delete everything in the editor, paste the whole of `cloudflare-worker.js`, click **Deploy**.
-3. Open the worker → **Settings → Triggers → Cron Triggers → Add**:
+1. Cloudflare dashboard → **Compute (Workers)** → **Create** → _Hello World_.
+2. Delete everything in the editor, paste all of `worker/cloudflare-worker.js`, **Deploy**.
+3. Worker → **Settings → Triggers → Cron Triggers → Add**: `* * * * *` (every minute, free plan).
+4. Open the worker URL for a JSON status page; add `/run` to force one pass now.
 
-   ```
-   * * * * *
-   ```
+No secrets, no environment variables, no service account, no bindings, no paid
+add-ons, no expiry.
 
-   That is "every minute", and it is included on Cloudflare's free plan.
-4. Open the worker URL — you should see a JSON status page. Add `/run` to the
-   URL to force one settlement pass immediately and see exactly what it settled.
+## Editing the worker
 
-There are **no secrets, no environment variables, no service account, no
-bindings and no paid add-ons**. Everything the worker needs is already inside
-the file. It never expires and there is nothing to renew.
+`cloudflare-worker.js` is **generated**. Edit the source and rebuild:
 
-## Why the old worker stopped settling
+```
+worker/src/worker.ts        # worker logic (fetching, database writes, cron)
+src/lib/market-grading.ts   # market grading engine — shared with the website
+src/lib/settle-core.ts      # ticket-level settlement — shared with the website
+bun run build:worker        # -> worker/cloudflare-worker.js
+```
 
-The previous version polled the database every 2 seconds — roughly 43,000
-queries a day. That exhausts the free daily read allowance within minutes, after
-which the database rejects everything and nothing settles. It also required a
-Firebase **admin service account** private key.
+Because the worker bundles the website's own engine, a leg can never grade
+differently in the two places.
 
-This version:
+## Markets covered
 
-- runs once a minute (~1,440 passes a day) instead of 43,200,
-- reads only tickets that are still open, capped at 120 per pass,
-- checks at most 60 fixtures per pass, 6 at a time,
-- uses the **public** Firebase REST API with the same public web key the website
-  itself already ships — so there is no private key to leak, rotate or configure.
+1X2 (FT / HT / 2H), double chance, draw no bet, both teams to score (including
+`Both Teams To Score - Yes`, `GG`/`NG` and first-half variants), over/under for
+match and team totals with whole-line pushes, multigoals ranges, exact goals,
+odd/even, correct score (with early impossible-loss), any other result, HT/FT,
+Asian/European/quarter handicaps, clean sheet, win to nil, team to score, both
+halves, either half, highest scoring half, winning margin, and `&`/`+`/`and`
+combinations of any of the above. Postponed, cancelled, abandoned, suspended or
+awarded fixtures void the leg and reset its odds to 1.00.
 
-Those limits keep it permanently and comfortably inside the free tier.
+## Free-tier safety
 
-## Safety
+- Runs once a minute (~1,440 passes/day), not every 2 seconds (~43,200).
+- Reads only open tickets, capped at 200 per pass; at most 90 fixture lookups.
+- Uses the **public** REST API with the public web key — no private key.
+- Every write carries an `updateTime` precondition and a `paid` flag, so the
+  site and the worker can never double-pay a ticket.
 
-- Every ticket update carries an `updateTime` precondition, so if the website
-  settled a ticket a moment earlier the worker's write is refused. The site and
-  the worker can never double-pay.
-- A `paid` flag is written alongside the payout as a second guard.
+## Housekeeping
+
+Admin → **Cleanup** deletes the polling data the worker saved (cached score
+lines on finished legs, and the worker's payout log rows). It never changes a
+ticket's status, legs, odds, stake, payout or any balance.
+
+## Deploying the website to Cloudflare
+
+`wrangler.jsonc` in the project root is ready:
+
+```
+bun run build
+bunx wrangler deploy
+```
+
+Static assets ship from `.output/public` and SSR runs from
+`.output/server/index.mjs`. To deploy from the dashboard instead, connect the
+repository in **Workers & Pages**, build command `bun run build`, and Cloudflare
+picks up `wrangler.jsonc` automatically.
 
 ## `settlement-worker.mjs` (legacy)
 
 The old Node version is kept for reference only. It needs a Firebase admin
-service account and a host that can run a permanent process (Railway, Render,
-Fly, a VPS). Prefer the Cloudflare file above.
-
-## Settlement rules (identical in the site and the worker)
-
-- Every leg is graded continuously: **won**, **lost**, **void** or still pending.
-- Any lost leg marks the whole ticket **lost immediately**, but the remaining
-  legs keep updating so the player sees exactly how many they won and lost.
-- All legs won → ticket **won**, wallet credited once.
-- Postponed / cancelled / abandoned fixture → that leg is **void** and its odds
-  are reset to `1.00`; if every leg is void the stake is refunded.
-- Market timing is respected: full-time markets settle at FT, half-time markets
-  at HT, `Over X` wins the moment the line is beaten, `Under X` loses at that
-  same moment, BTTS settles as soon as both teams have scored, correct score
-  loses as soon as it becomes impossible, handicaps and draw-no-bet push to void
-  on an exact tie.
+service account and a host that can run a permanent process, and it will throw
+`Disallowed operation called within global scope` if pasted into Cloudflare.

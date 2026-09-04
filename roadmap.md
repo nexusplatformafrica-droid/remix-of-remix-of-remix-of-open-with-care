@@ -9,3 +9,9 @@
     Firebase daily quota is never exhausted again
   - manual `/run` endpoint + `/` health page
 - [ ] User deploys it on Cloudflare and sends back the worker URL
+
+## Done
+- Shared grading engine (src/lib/market-grading.ts) now used by the site and the worker; all markets incl. BTTS labels ("Both Teams To Score - Yes"), handicaps, HT/FT, combos.
+- worker/cloudflare-worker.js is generated from worker/src/worker.ts via `bun run build:worker`.
+- Admin → Cleanup page deletes worker-saved polling data (never ticket status).
+- wrangler.jsonc added for deploying the website to Cloudflare.

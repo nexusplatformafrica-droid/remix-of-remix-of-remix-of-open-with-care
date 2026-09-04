@@ -31,6 +31,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TopscorersRouteImport } from './routes/topscorers'
 import { Route as VirtualRouteImport } from './routes/virtual'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCleanupRouteImport } from './routes/admin.cleanup'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminWalletRouteImport } from './routes/admin.wallet'
@@ -166,6 +167,11 @@ const VirtualRoute = VirtualRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCleanupRoute = AdminCleanupRouteImport.update({
+  id: '/cleanup',
+  path: '/cleanup',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminContentRoute = AdminContentRouteImport.update({
@@ -326,6 +332,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/topscorers': typeof TopscorersRoute
   '/virtual': typeof VirtualRoute
+  '/admin/cleanup': typeof AdminCleanupRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/wallet': typeof AdminWalletRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/topscorers': typeof TopscorersRoute
   '/virtual': typeof VirtualRoute
+  '/admin/cleanup': typeof AdminCleanupRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/wallet': typeof AdminWalletRoute
@@ -426,6 +434,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/topscorers': typeof TopscorersRoute
   '/virtual': typeof VirtualRoute
+  '/admin/cleanup': typeof AdminCleanupRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/wallet': typeof AdminWalletRoute
@@ -478,6 +487,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/topscorers'
     | '/virtual'
+    | '/admin/cleanup'
     | '/admin/content'
     | '/admin/settings'
     | '/admin/wallet'
@@ -527,6 +537,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/topscorers'
     | '/virtual'
+    | '/admin/cleanup'
     | '/admin/content'
     | '/admin/settings'
     | '/admin/wallet'
@@ -577,6 +588,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/topscorers'
     | '/virtual'
+    | '/admin/cleanup'
     | '/admin/content'
     | '/admin/settings'
     | '/admin/wallet'
@@ -795,6 +807,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/cleanup': {
+      id: '/admin/cleanup'
+      path: '/cleanup'
+      fullPath: '/admin/cleanup'
+      preLoaderRoute: typeof AdminCleanupRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/content': {
       id: '/admin/content'
       path: '/content'
@@ -981,6 +1000,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminCleanupRoute: typeof AdminCleanupRoute
   AdminContentRoute: typeof AdminContentRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminWalletRoute: typeof AdminWalletRoute
@@ -1002,6 +1022,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCleanupRoute: AdminCleanupRoute,
   AdminContentRoute: AdminContentRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminWalletRoute: AdminWalletRoute,
