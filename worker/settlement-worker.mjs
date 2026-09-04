@@ -48,7 +48,7 @@ if (serviceAccountJson) {
 }
 const ALLSPORTS_KEY =
   process.env.ALLSPORTS_API_KEY ||
-  "235d3ade0664feb00d281d00a83bf7c7786a0d3d5d5dc6de8f40859f240ca9a4";
+  "eb3e6be456f441dad3f93fbbfc236b316ba8c95472f2abe641171f95902edcee";
 const POLL_MS = Number(process.env.POLL_MS || 2000);
 const PORT = Number(process.env.PORT || 3000);
 const VIRTUAL_RESULTS = "https://desktop.fortebet.ug/api/web/v1/virtual-soccer/results";
