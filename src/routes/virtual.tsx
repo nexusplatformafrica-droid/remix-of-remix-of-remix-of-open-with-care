@@ -95,7 +95,7 @@ function ScaledEmbed({
   );
 }
 
-/** Market row: name on the left, odd on the right — same rhythm as the reference sheet. */
+/** Market row: name on the left, odd on the right — softer, full-width rhythm. */
 function Cell({
   name,
   odd,
@@ -110,7 +110,7 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`flex h-8 w-full items-center justify-between gap-1 border-r border-b border-xb-line px-2 text-[11px] leading-none transition-colors last:border-r-0 ${
+      className={`flex h-7 w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
           ? "bg-xb-blue text-xb-on-dark"
           : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
@@ -126,7 +126,7 @@ function Cell({
 
 function GroupTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-[3px] text-center text-[9px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
+    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-1 text-center text-[10px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
       {children}
     </div>
   );
