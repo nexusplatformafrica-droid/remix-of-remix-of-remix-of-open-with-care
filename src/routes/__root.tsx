@@ -9,8 +9,20 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import "../styles.css";
 import appCss from "../styles.css?url";
+
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { BetSlipProvider } from "@/components/xbet/BetSlipContext";
+import { AuthProvider } from "@/components/xbet/AuthContext";
+import { AuthModals } from "@/components/xbet/AuthModals";
+import { TicketPdfFloat } from "@/components/xbet/TicketPdfFloat";
+import { BetSettlement } from "@/components/xbet/BetSettlement";
+import { PaymentPoller } from "@/components/xbet/PaymentPoller";
+import { VideoPlayerProvider } from "@/components/xbet/VideoPlayerContext";
+
+
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -72,26 +84,96 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SITE_URL = "https://project--1f22d616-b940-4829-b62d-a0d55bbc2c52.lovable.app";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "BET PLUS+ — Online Betting Uganda | Live Odds, Aviator & Virtual" },
+      {
+        name: "description",
+        content:
+          "BET PLUS+ is Uganda's fast betting site: live football odds, Premier League, La Liga, UCL, virtual soccer, Aviator and slots, with instant Mobile Money deposits and withdrawals.",
+      },
+      {
+        name: "keywords",
+        content:
+          "betting site Uganda, online betting, live odds, football betting, Aviator game, virtual soccer, casino slots, mobile money betting, sports betting Kenya, Tanzania, Nigeria, Ghana, Zambia",
+      },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+      { name: "author", content: "BET PLUS+" },
+      { property: "og:site_name", content: "BET PLUS+" },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_UG" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:image", content: `${SITE_URL}/og-image.png` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.png` },
+      { name: "theme-color", content: "#0f2137" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": `${SITE_URL}/#organization`,
+              name: "BET PLUS+",
+              url: SITE_URL,
+              logo: `${SITE_URL}/favicon.png`,
+              image: `${SITE_URL}/og-image.png`,
+              areaServed: [
+                "Uganda",
+                "Kenya",
+                "Tanzania",
+                "Rwanda",
+                "Nigeria",
+                "Ghana",
+                "Zambia",
+                "Malawi",
+                "Cameroon",
+                "DR Congo",
+              ],
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${SITE_URL}/#website`,
+              url: SITE_URL,
+              name: "BET PLUS+",
+              inLanguage: "en",
+              publisher: { "@id": `${SITE_URL}/#organization` },
+              potentialAction: {
+                "@type": "SearchAction",
+                target: `${SITE_URL}/?q={search_term_string}`,
+                "query-input": "required name=search_term_string",
+              },
+            },
+          ],
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +201,21 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <AuthProvider>
+        <BetSlipProvider>
+          <VideoPlayerProvider>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+            <AuthModals />
+            <BetSettlement />
+            <PaymentPoller />
+            <TicketPdfFloat />
+            <Toaster position="bottom-right" />
+          </VideoPlayerProvider>
+
+        </BetSlipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
+

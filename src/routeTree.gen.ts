@@ -10,33 +10,633 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AviatorRouteImport } from './routes/aviator'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CountriesRouteImport } from './routes/countries'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LuckyWinnerRouteImport } from './routes/lucky-winner'
+import { Route as PartnershipRouteImport } from './routes/partnership'
+import { Route as PlayersRouteImport } from './routes/players'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResponsibleGamingRouteImport } from './routes/responsible-gaming'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as RoyalFortuneRouteImport } from './routes/royal-fortune'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SlotRouteImport } from './routes/slot'
+import { Route as StandingsRouteImport } from './routes/standings'
+import { Route as TeamsRouteImport } from './routes/teams'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TopscorersRouteImport } from './routes/topscorers'
+import { Route as VirtualRouteImport } from './routes/virtual'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminWalletRouteImport } from './routes/admin.wallet'
+import { Route as MatchMatchIdRouteImport } from './routes/match.$matchId'
+import { Route as WinnerTicketWinnerIdRouteImport } from './routes/winner-ticket.$winnerId'
+import { Route as WinnerWinnerIdRouteImport } from './routes/winner.$winnerId'
+import { Route as AdminActivitiesIndexRouteImport } from './routes/admin.activities.index'
+import { Route as AdminActivitiesActivityIdRouteImport } from './routes/admin.activities.$activityId'
+import { Route as AdminAffiliatesIndexRouteImport } from './routes/admin.affiliates.index'
+import { Route as AdminAffiliatesAffiliateIdRouteImport } from './routes/admin.affiliates.$affiliateId'
+import { Route as AdminAgentsIndexRouteImport } from './routes/admin.agents.index'
+import { Route as AdminAgentsAgentIdRouteImport } from './routes/admin.agents.$agentId'
+import { Route as AdminBetsIndexRouteImport } from './routes/admin.bets.index'
+import { Route as AdminBetsBetIdRouteImport } from './routes/admin.bets.$betId'
+import { Route as AdminPartnersIndexRouteImport } from './routes/admin.partners.index'
+import { Route as AdminPartnersPartnerIdRouteImport } from './routes/admin.partners.$partnerId'
+import { Route as AdminTransactionsIndexRouteImport } from './routes/admin.transactions.index'
+import { Route as AdminTransactionsTxIdRouteImport } from './routes/admin.transactions.$txId'
+import { Route as AdminUsersIndexRouteImport } from './routes/admin.users.index'
+import { Route as AdminUsersUserIdRouteImport } from './routes/admin.users.$userId'
+import { Route as ApiPublicTimeRouteImport } from './routes/api/public/time'
+import { Route as ResultDetailSportMatchIdRouteImport } from './routes/result-detail.$sport.$matchId'
+import { Route as ResultHighlightsSportMatchIdRouteImport } from './routes/result-highlights.$sport.$matchId'
+import { Route as TeamSportTeamIdRouteImport } from './routes/team.$sport.$teamId'
+import { Route as ApiPublicRoyalDebugRouteImport } from './routes/api/public/royal/debug'
+import { Route as ApiPublicRoyalWalletSplatRouteImport } from './routes/api/public/royal/wallet/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AviatorRoute = AviatorRouteImport.update({
+  id: '/aviator',
+  path: '/aviator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountriesRoute = CountriesRouteImport.update({
+  id: '/countries',
+  path: '/countries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LuckyWinnerRoute = LuckyWinnerRouteImport.update({
+  id: '/lucky-winner',
+  path: '/lucky-winner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnershipRoute = PartnershipRouteImport.update({
+  id: '/partnership',
+  path: '/partnership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayersRoute = PlayersRouteImport.update({
+  id: '/players',
+  path: '/players',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResponsibleGamingRoute = ResponsibleGamingRouteImport.update({
+  id: '/responsible-gaming',
+  path: '/responsible-gaming',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoyalFortuneRoute = RoyalFortuneRouteImport.update({
+  id: '/royal-fortune',
+  path: '/royal-fortune',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlotRoute = SlotRouteImport.update({
+  id: '/slot',
+  path: '/slot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StandingsRoute = StandingsRouteImport.update({
+  id: '/standings',
+  path: '/standings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeamsRoute = TeamsRouteImport.update({
+  id: '/teams',
+  path: '/teams',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopscorersRoute = TopscorersRouteImport.update({
+  id: '/topscorers',
+  path: '/topscorers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VirtualRoute = VirtualRouteImport.update({
+  id: '/virtual',
+  path: '/virtual',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminWalletRoute = AdminWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AdminRoute,
+} as any)
+const MatchMatchIdRoute = MatchMatchIdRouteImport.update({
+  id: '/match/$matchId',
+  path: '/match/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WinnerTicketWinnerIdRoute = WinnerTicketWinnerIdRouteImport.update({
+  id: '/winner-ticket/$winnerId',
+  path: '/winner-ticket/$winnerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WinnerWinnerIdRoute = WinnerWinnerIdRouteImport.update({
+  id: '/winner/$winnerId',
+  path: '/winner/$winnerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminActivitiesIndexRoute = AdminActivitiesIndexRouteImport.update({
+  id: '/activities/',
+  path: '/activities/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminActivitiesActivityIdRoute =
+  AdminActivitiesActivityIdRouteImport.update({
+    id: '/activities/$activityId',
+    path: '/activities/$activityId',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminAffiliatesIndexRoute = AdminAffiliatesIndexRouteImport.update({
+  id: '/affiliates/',
+  path: '/affiliates/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAffiliatesAffiliateIdRoute =
+  AdminAffiliatesAffiliateIdRouteImport.update({
+    id: '/affiliates/$affiliateId',
+    path: '/affiliates/$affiliateId',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminAgentsIndexRoute = AdminAgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgentsAgentIdRoute = AdminAgentsAgentIdRouteImport.update({
+  id: '/agents/$agentId',
+  path: '/agents/$agentId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBetsIndexRoute = AdminBetsIndexRouteImport.update({
+  id: '/bets/',
+  path: '/bets/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBetsBetIdRoute = AdminBetsBetIdRouteImport.update({
+  id: '/bets/$betId',
+  path: '/bets/$betId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPartnersIndexRoute = AdminPartnersIndexRouteImport.update({
+  id: '/partners/',
+  path: '/partners/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPartnersPartnerIdRoute = AdminPartnersPartnerIdRouteImport.update({
+  id: '/partners/$partnerId',
+  path: '/partners/$partnerId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTransactionsIndexRoute = AdminTransactionsIndexRouteImport.update({
+  id: '/transactions/',
+  path: '/transactions/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTransactionsTxIdRoute = AdminTransactionsTxIdRouteImport.update({
+  id: '/transactions/$txId',
+  path: '/transactions/$txId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicTimeRoute = ApiPublicTimeRouteImport.update({
+  id: '/api/public/time',
+  path: '/api/public/time',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultDetailSportMatchIdRoute =
+  ResultDetailSportMatchIdRouteImport.update({
+    id: '/result-detail/$sport/$matchId',
+    path: '/result-detail/$sport/$matchId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ResultHighlightsSportMatchIdRoute =
+  ResultHighlightsSportMatchIdRouteImport.update({
+    id: '/result-highlights/$sport/$matchId',
+    path: '/result-highlights/$sport/$matchId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TeamSportTeamIdRoute = TeamSportTeamIdRouteImport.update({
+  id: '/team/$sport/$teamId',
+  path: '/team/$sport/$teamId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicRoyalDebugRoute = ApiPublicRoyalDebugRouteImport.update({
+  id: '/api/public/royal/debug',
+  path: '/api/public/royal/debug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicRoyalWalletSplatRoute =
+  ApiPublicRoyalWalletSplatRouteImport.update({
+    id: '/api/public/royal/wallet/$',
+    path: '/api/public/royal/wallet/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/aviator': typeof AviatorRoute
+  '/contact': typeof ContactRoute
+  '/countries': typeof CountriesRoute
+  '/faq': typeof FaqRoute
+  '/lucky-winner': typeof LuckyWinnerRoute
+  '/partnership': typeof PartnershipRoute
+  '/players': typeof PlayersRoute
+  '/privacy': typeof PrivacyRoute
+  '/responsible-gaming': typeof ResponsibleGamingRoute
+  '/results': typeof ResultsRoute
+  '/royal-fortune': typeof RoyalFortuneRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/slot': typeof SlotRoute
+  '/standings': typeof StandingsRoute
+  '/teams': typeof TeamsRoute
+  '/terms': typeof TermsRoute
+  '/topscorers': typeof TopscorersRoute
+  '/virtual': typeof VirtualRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/wallet': typeof AdminWalletRoute
+  '/match/$matchId': typeof MatchMatchIdRoute
+  '/winner-ticket/$winnerId': typeof WinnerTicketWinnerIdRoute
+  '/winner/$winnerId': typeof WinnerWinnerIdRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/activities/$activityId': typeof AdminActivitiesActivityIdRoute
+  '/admin/affiliates/$affiliateId': typeof AdminAffiliatesAffiliateIdRoute
+  '/admin/agents/$agentId': typeof AdminAgentsAgentIdRoute
+  '/admin/bets/$betId': typeof AdminBetsBetIdRoute
+  '/admin/partners/$partnerId': typeof AdminPartnersPartnerIdRoute
+  '/admin/transactions/$txId': typeof AdminTransactionsTxIdRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/api/public/time': typeof ApiPublicTimeRoute
+  '/result-detail/$sport/$matchId': typeof ResultDetailSportMatchIdRoute
+  '/result-highlights/$sport/$matchId': typeof ResultHighlightsSportMatchIdRoute
+  '/team/$sport/$teamId': typeof TeamSportTeamIdRoute
+  '/admin/activities/': typeof AdminActivitiesIndexRoute
+  '/admin/affiliates/': typeof AdminAffiliatesIndexRoute
+  '/admin/agents/': typeof AdminAgentsIndexRoute
+  '/admin/bets/': typeof AdminBetsIndexRoute
+  '/admin/partners/': typeof AdminPartnersIndexRoute
+  '/admin/transactions/': typeof AdminTransactionsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
+  '/api/public/royal/debug': typeof ApiPublicRoyalDebugRoute
+  '/api/public/royal/wallet/$': typeof ApiPublicRoyalWalletSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/aviator': typeof AviatorRoute
+  '/contact': typeof ContactRoute
+  '/countries': typeof CountriesRoute
+  '/faq': typeof FaqRoute
+  '/lucky-winner': typeof LuckyWinnerRoute
+  '/partnership': typeof PartnershipRoute
+  '/players': typeof PlayersRoute
+  '/privacy': typeof PrivacyRoute
+  '/responsible-gaming': typeof ResponsibleGamingRoute
+  '/results': typeof ResultsRoute
+  '/royal-fortune': typeof RoyalFortuneRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/slot': typeof SlotRoute
+  '/standings': typeof StandingsRoute
+  '/teams': typeof TeamsRoute
+  '/terms': typeof TermsRoute
+  '/topscorers': typeof TopscorersRoute
+  '/virtual': typeof VirtualRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/wallet': typeof AdminWalletRoute
+  '/match/$matchId': typeof MatchMatchIdRoute
+  '/winner-ticket/$winnerId': typeof WinnerTicketWinnerIdRoute
+  '/winner/$winnerId': typeof WinnerWinnerIdRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/activities/$activityId': typeof AdminActivitiesActivityIdRoute
+  '/admin/affiliates/$affiliateId': typeof AdminAffiliatesAffiliateIdRoute
+  '/admin/agents/$agentId': typeof AdminAgentsAgentIdRoute
+  '/admin/bets/$betId': typeof AdminBetsBetIdRoute
+  '/admin/partners/$partnerId': typeof AdminPartnersPartnerIdRoute
+  '/admin/transactions/$txId': typeof AdminTransactionsTxIdRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/api/public/time': typeof ApiPublicTimeRoute
+  '/result-detail/$sport/$matchId': typeof ResultDetailSportMatchIdRoute
+  '/result-highlights/$sport/$matchId': typeof ResultHighlightsSportMatchIdRoute
+  '/team/$sport/$teamId': typeof TeamSportTeamIdRoute
+  '/admin/activities': typeof AdminActivitiesIndexRoute
+  '/admin/affiliates': typeof AdminAffiliatesIndexRoute
+  '/admin/agents': typeof AdminAgentsIndexRoute
+  '/admin/bets': typeof AdminBetsIndexRoute
+  '/admin/partners': typeof AdminPartnersIndexRoute
+  '/admin/transactions': typeof AdminTransactionsIndexRoute
+  '/admin/users': typeof AdminUsersIndexRoute
+  '/api/public/royal/debug': typeof ApiPublicRoyalDebugRoute
+  '/api/public/royal/wallet/$': typeof ApiPublicRoyalWalletSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/aviator': typeof AviatorRoute
+  '/contact': typeof ContactRoute
+  '/countries': typeof CountriesRoute
+  '/faq': typeof FaqRoute
+  '/lucky-winner': typeof LuckyWinnerRoute
+  '/partnership': typeof PartnershipRoute
+  '/players': typeof PlayersRoute
+  '/privacy': typeof PrivacyRoute
+  '/responsible-gaming': typeof ResponsibleGamingRoute
+  '/results': typeof ResultsRoute
+  '/royal-fortune': typeof RoyalFortuneRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/slot': typeof SlotRoute
+  '/standings': typeof StandingsRoute
+  '/teams': typeof TeamsRoute
+  '/terms': typeof TermsRoute
+  '/topscorers': typeof TopscorersRoute
+  '/virtual': typeof VirtualRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/wallet': typeof AdminWalletRoute
+  '/match/$matchId': typeof MatchMatchIdRoute
+  '/winner-ticket/$winnerId': typeof WinnerTicketWinnerIdRoute
+  '/winner/$winnerId': typeof WinnerWinnerIdRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/activities/$activityId': typeof AdminActivitiesActivityIdRoute
+  '/admin/affiliates/$affiliateId': typeof AdminAffiliatesAffiliateIdRoute
+  '/admin/agents/$agentId': typeof AdminAgentsAgentIdRoute
+  '/admin/bets/$betId': typeof AdminBetsBetIdRoute
+  '/admin/partners/$partnerId': typeof AdminPartnersPartnerIdRoute
+  '/admin/transactions/$txId': typeof AdminTransactionsTxIdRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/api/public/time': typeof ApiPublicTimeRoute
+  '/result-detail/$sport/$matchId': typeof ResultDetailSportMatchIdRoute
+  '/result-highlights/$sport/$matchId': typeof ResultHighlightsSportMatchIdRoute
+  '/team/$sport/$teamId': typeof TeamSportTeamIdRoute
+  '/admin/activities/': typeof AdminActivitiesIndexRoute
+  '/admin/affiliates/': typeof AdminAffiliatesIndexRoute
+  '/admin/agents/': typeof AdminAgentsIndexRoute
+  '/admin/bets/': typeof AdminBetsIndexRoute
+  '/admin/partners/': typeof AdminPartnersIndexRoute
+  '/admin/transactions/': typeof AdminTransactionsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
+  '/api/public/royal/debug': typeof ApiPublicRoyalDebugRoute
+  '/api/public/royal/wallet/$': typeof ApiPublicRoyalWalletSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/aviator'
+    | '/contact'
+    | '/countries'
+    | '/faq'
+    | '/lucky-winner'
+    | '/partnership'
+    | '/players'
+    | '/privacy'
+    | '/responsible-gaming'
+    | '/results'
+    | '/royal-fortune'
+    | '/sitemap.xml'
+    | '/slot'
+    | '/standings'
+    | '/teams'
+    | '/terms'
+    | '/topscorers'
+    | '/virtual'
+    | '/admin/content'
+    | '/admin/settings'
+    | '/admin/wallet'
+    | '/match/$matchId'
+    | '/winner-ticket/$winnerId'
+    | '/winner/$winnerId'
+    | '/admin/'
+    | '/admin/activities/$activityId'
+    | '/admin/affiliates/$affiliateId'
+    | '/admin/agents/$agentId'
+    | '/admin/bets/$betId'
+    | '/admin/partners/$partnerId'
+    | '/admin/transactions/$txId'
+    | '/admin/users/$userId'
+    | '/api/public/time'
+    | '/result-detail/$sport/$matchId'
+    | '/result-highlights/$sport/$matchId'
+    | '/team/$sport/$teamId'
+    | '/admin/activities/'
+    | '/admin/affiliates/'
+    | '/admin/agents/'
+    | '/admin/bets/'
+    | '/admin/partners/'
+    | '/admin/transactions/'
+    | '/admin/users/'
+    | '/api/public/royal/debug'
+    | '/api/public/royal/wallet/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/aviator'
+    | '/contact'
+    | '/countries'
+    | '/faq'
+    | '/lucky-winner'
+    | '/partnership'
+    | '/players'
+    | '/privacy'
+    | '/responsible-gaming'
+    | '/results'
+    | '/royal-fortune'
+    | '/sitemap.xml'
+    | '/slot'
+    | '/standings'
+    | '/teams'
+    | '/terms'
+    | '/topscorers'
+    | '/virtual'
+    | '/admin/content'
+    | '/admin/settings'
+    | '/admin/wallet'
+    | '/match/$matchId'
+    | '/winner-ticket/$winnerId'
+    | '/winner/$winnerId'
+    | '/admin'
+    | '/admin/activities/$activityId'
+    | '/admin/affiliates/$affiliateId'
+    | '/admin/agents/$agentId'
+    | '/admin/bets/$betId'
+    | '/admin/partners/$partnerId'
+    | '/admin/transactions/$txId'
+    | '/admin/users/$userId'
+    | '/api/public/time'
+    | '/result-detail/$sport/$matchId'
+    | '/result-highlights/$sport/$matchId'
+    | '/team/$sport/$teamId'
+    | '/admin/activities'
+    | '/admin/affiliates'
+    | '/admin/agents'
+    | '/admin/bets'
+    | '/admin/partners'
+    | '/admin/transactions'
+    | '/admin/users'
+    | '/api/public/royal/debug'
+    | '/api/public/royal/wallet/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/aviator'
+    | '/contact'
+    | '/countries'
+    | '/faq'
+    | '/lucky-winner'
+    | '/partnership'
+    | '/players'
+    | '/privacy'
+    | '/responsible-gaming'
+    | '/results'
+    | '/royal-fortune'
+    | '/sitemap.xml'
+    | '/slot'
+    | '/standings'
+    | '/teams'
+    | '/terms'
+    | '/topscorers'
+    | '/virtual'
+    | '/admin/content'
+    | '/admin/settings'
+    | '/admin/wallet'
+    | '/match/$matchId'
+    | '/winner-ticket/$winnerId'
+    | '/winner/$winnerId'
+    | '/admin/'
+    | '/admin/activities/$activityId'
+    | '/admin/affiliates/$affiliateId'
+    | '/admin/agents/$agentId'
+    | '/admin/bets/$betId'
+    | '/admin/partners/$partnerId'
+    | '/admin/transactions/$txId'
+    | '/admin/users/$userId'
+    | '/api/public/time'
+    | '/result-detail/$sport/$matchId'
+    | '/result-highlights/$sport/$matchId'
+    | '/team/$sport/$teamId'
+    | '/admin/activities/'
+    | '/admin/affiliates/'
+    | '/admin/agents/'
+    | '/admin/bets/'
+    | '/admin/partners/'
+    | '/admin/transactions/'
+    | '/admin/users/'
+    | '/api/public/royal/debug'
+    | '/api/public/royal/wallet/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AviatorRoute: typeof AviatorRoute
+  ContactRoute: typeof ContactRoute
+  CountriesRoute: typeof CountriesRoute
+  FaqRoute: typeof FaqRoute
+  LuckyWinnerRoute: typeof LuckyWinnerRoute
+  PartnershipRoute: typeof PartnershipRoute
+  PlayersRoute: typeof PlayersRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ResponsibleGamingRoute: typeof ResponsibleGamingRoute
+  ResultsRoute: typeof ResultsRoute
+  RoyalFortuneRoute: typeof RoyalFortuneRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SlotRoute: typeof SlotRoute
+  StandingsRoute: typeof StandingsRoute
+  TeamsRoute: typeof TeamsRoute
+  TermsRoute: typeof TermsRoute
+  TopscorersRoute: typeof TopscorersRoute
+  VirtualRoute: typeof VirtualRoute
+  MatchMatchIdRoute: typeof MatchMatchIdRoute
+  WinnerTicketWinnerIdRoute: typeof WinnerTicketWinnerIdRoute
+  WinnerWinnerIdRoute: typeof WinnerWinnerIdRoute
+  ApiPublicTimeRoute: typeof ApiPublicTimeRoute
+  ResultDetailSportMatchIdRoute: typeof ResultDetailSportMatchIdRoute
+  ResultHighlightsSportMatchIdRoute: typeof ResultHighlightsSportMatchIdRoute
+  TeamSportTeamIdRoute: typeof TeamSportTeamIdRoute
+  ApiPublicRoyalDebugRoute: typeof ApiPublicRoyalDebugRoute
+  ApiPublicRoyalWalletSplatRoute: typeof ApiPublicRoyalWalletSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +648,413 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviator': {
+      id: '/aviator'
+      path: '/aviator'
+      fullPath: '/aviator'
+      preLoaderRoute: typeof AviatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/countries': {
+      id: '/countries'
+      path: '/countries'
+      fullPath: '/countries'
+      preLoaderRoute: typeof CountriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lucky-winner': {
+      id: '/lucky-winner'
+      path: '/lucky-winner'
+      fullPath: '/lucky-winner'
+      preLoaderRoute: typeof LuckyWinnerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partnership': {
+      id: '/partnership'
+      path: '/partnership'
+      fullPath: '/partnership'
+      preLoaderRoute: typeof PartnershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/players': {
+      id: '/players'
+      path: '/players'
+      fullPath: '/players'
+      preLoaderRoute: typeof PlayersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/responsible-gaming': {
+      id: '/responsible-gaming'
+      path: '/responsible-gaming'
+      fullPath: '/responsible-gaming'
+      preLoaderRoute: typeof ResponsibleGamingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/royal-fortune': {
+      id: '/royal-fortune'
+      path: '/royal-fortune'
+      fullPath: '/royal-fortune'
+      preLoaderRoute: typeof RoyalFortuneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slot': {
+      id: '/slot'
+      path: '/slot'
+      fullPath: '/slot'
+      preLoaderRoute: typeof SlotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/standings': {
+      id: '/standings'
+      path: '/standings'
+      fullPath: '/standings'
+      preLoaderRoute: typeof StandingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teams': {
+      id: '/teams'
+      path: '/teams'
+      fullPath: '/teams'
+      preLoaderRoute: typeof TeamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topscorers': {
+      id: '/topscorers'
+      path: '/topscorers'
+      fullPath: '/topscorers'
+      preLoaderRoute: typeof TopscorersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/virtual': {
+      id: '/virtual'
+      path: '/virtual'
+      fullPath: '/virtual'
+      preLoaderRoute: typeof VirtualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/wallet': {
+      id: '/admin/wallet'
+      path: '/wallet'
+      fullPath: '/admin/wallet'
+      preLoaderRoute: typeof AdminWalletRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/match/$matchId': {
+      id: '/match/$matchId'
+      path: '/match/$matchId'
+      fullPath: '/match/$matchId'
+      preLoaderRoute: typeof MatchMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/winner-ticket/$winnerId': {
+      id: '/winner-ticket/$winnerId'
+      path: '/winner-ticket/$winnerId'
+      fullPath: '/winner-ticket/$winnerId'
+      preLoaderRoute: typeof WinnerTicketWinnerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/winner/$winnerId': {
+      id: '/winner/$winnerId'
+      path: '/winner/$winnerId'
+      fullPath: '/winner/$winnerId'
+      preLoaderRoute: typeof WinnerWinnerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/activities/': {
+      id: '/admin/activities/'
+      path: '/activities'
+      fullPath: '/admin/activities/'
+      preLoaderRoute: typeof AdminActivitiesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/activities/$activityId': {
+      id: '/admin/activities/$activityId'
+      path: '/activities/$activityId'
+      fullPath: '/admin/activities/$activityId'
+      preLoaderRoute: typeof AdminActivitiesActivityIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/affiliates/': {
+      id: '/admin/affiliates/'
+      path: '/affiliates'
+      fullPath: '/admin/affiliates/'
+      preLoaderRoute: typeof AdminAffiliatesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/affiliates/$affiliateId': {
+      id: '/admin/affiliates/$affiliateId'
+      path: '/affiliates/$affiliateId'
+      fullPath: '/admin/affiliates/$affiliateId'
+      preLoaderRoute: typeof AdminAffiliatesAffiliateIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agents/': {
+      id: '/admin/agents/'
+      path: '/agents'
+      fullPath: '/admin/agents/'
+      preLoaderRoute: typeof AdminAgentsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agents/$agentId': {
+      id: '/admin/agents/$agentId'
+      path: '/agents/$agentId'
+      fullPath: '/admin/agents/$agentId'
+      preLoaderRoute: typeof AdminAgentsAgentIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/bets/': {
+      id: '/admin/bets/'
+      path: '/bets'
+      fullPath: '/admin/bets/'
+      preLoaderRoute: typeof AdminBetsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/bets/$betId': {
+      id: '/admin/bets/$betId'
+      path: '/bets/$betId'
+      fullPath: '/admin/bets/$betId'
+      preLoaderRoute: typeof AdminBetsBetIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/partners/': {
+      id: '/admin/partners/'
+      path: '/partners'
+      fullPath: '/admin/partners/'
+      preLoaderRoute: typeof AdminPartnersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/partners/$partnerId': {
+      id: '/admin/partners/$partnerId'
+      path: '/partners/$partnerId'
+      fullPath: '/admin/partners/$partnerId'
+      preLoaderRoute: typeof AdminPartnersPartnerIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/transactions/': {
+      id: '/admin/transactions/'
+      path: '/transactions'
+      fullPath: '/admin/transactions/'
+      preLoaderRoute: typeof AdminTransactionsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/transactions/$txId': {
+      id: '/admin/transactions/$txId'
+      path: '/transactions/$txId'
+      fullPath: '/admin/transactions/$txId'
+      preLoaderRoute: typeof AdminTransactionsTxIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users/$userId': {
+      id: '/admin/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AdminUsersUserIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/public/time': {
+      id: '/api/public/time'
+      path: '/api/public/time'
+      fullPath: '/api/public/time'
+      preLoaderRoute: typeof ApiPublicTimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/result-detail/$sport/$matchId': {
+      id: '/result-detail/$sport/$matchId'
+      path: '/result-detail/$sport/$matchId'
+      fullPath: '/result-detail/$sport/$matchId'
+      preLoaderRoute: typeof ResultDetailSportMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/result-highlights/$sport/$matchId': {
+      id: '/result-highlights/$sport/$matchId'
+      path: '/result-highlights/$sport/$matchId'
+      fullPath: '/result-highlights/$sport/$matchId'
+      preLoaderRoute: typeof ResultHighlightsSportMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/team/$sport/$teamId': {
+      id: '/team/$sport/$teamId'
+      path: '/team/$sport/$teamId'
+      fullPath: '/team/$sport/$teamId'
+      preLoaderRoute: typeof TeamSportTeamIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/royal/debug': {
+      id: '/api/public/royal/debug'
+      path: '/api/public/royal/debug'
+      fullPath: '/api/public/royal/debug'
+      preLoaderRoute: typeof ApiPublicRoyalDebugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/royal/wallet/$': {
+      id: '/api/public/royal/wallet/$'
+      path: '/api/public/royal/wallet/$'
+      fullPath: '/api/public/royal/wallet/$'
+      preLoaderRoute: typeof ApiPublicRoyalWalletSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminContentRoute: typeof AdminContentRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminWalletRoute: typeof AdminWalletRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminActivitiesActivityIdRoute: typeof AdminActivitiesActivityIdRoute
+  AdminAffiliatesAffiliateIdRoute: typeof AdminAffiliatesAffiliateIdRoute
+  AdminAgentsAgentIdRoute: typeof AdminAgentsAgentIdRoute
+  AdminBetsBetIdRoute: typeof AdminBetsBetIdRoute
+  AdminPartnersPartnerIdRoute: typeof AdminPartnersPartnerIdRoute
+  AdminTransactionsTxIdRoute: typeof AdminTransactionsTxIdRoute
+  AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
+  AdminActivitiesIndexRoute: typeof AdminActivitiesIndexRoute
+  AdminAffiliatesIndexRoute: typeof AdminAffiliatesIndexRoute
+  AdminAgentsIndexRoute: typeof AdminAgentsIndexRoute
+  AdminBetsIndexRoute: typeof AdminBetsIndexRoute
+  AdminPartnersIndexRoute: typeof AdminPartnersIndexRoute
+  AdminTransactionsIndexRoute: typeof AdminTransactionsIndexRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminContentRoute: AdminContentRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminWalletRoute: AdminWalletRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminActivitiesActivityIdRoute: AdminActivitiesActivityIdRoute,
+  AdminAffiliatesAffiliateIdRoute: AdminAffiliatesAffiliateIdRoute,
+  AdminAgentsAgentIdRoute: AdminAgentsAgentIdRoute,
+  AdminBetsBetIdRoute: AdminBetsBetIdRoute,
+  AdminPartnersPartnerIdRoute: AdminPartnersPartnerIdRoute,
+  AdminTransactionsTxIdRoute: AdminTransactionsTxIdRoute,
+  AdminUsersUserIdRoute: AdminUsersUserIdRoute,
+  AdminActivitiesIndexRoute: AdminActivitiesIndexRoute,
+  AdminAffiliatesIndexRoute: AdminAffiliatesIndexRoute,
+  AdminAgentsIndexRoute: AdminAgentsIndexRoute,
+  AdminBetsIndexRoute: AdminBetsIndexRoute,
+  AdminPartnersIndexRoute: AdminPartnersIndexRoute,
+  AdminTransactionsIndexRoute: AdminTransactionsIndexRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AviatorRoute: AviatorRoute,
+  ContactRoute: ContactRoute,
+  CountriesRoute: CountriesRoute,
+  FaqRoute: FaqRoute,
+  LuckyWinnerRoute: LuckyWinnerRoute,
+  PartnershipRoute: PartnershipRoute,
+  PlayersRoute: PlayersRoute,
+  PrivacyRoute: PrivacyRoute,
+  ResponsibleGamingRoute: ResponsibleGamingRoute,
+  ResultsRoute: ResultsRoute,
+  RoyalFortuneRoute: RoyalFortuneRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SlotRoute: SlotRoute,
+  StandingsRoute: StandingsRoute,
+  TeamsRoute: TeamsRoute,
+  TermsRoute: TermsRoute,
+  TopscorersRoute: TopscorersRoute,
+  VirtualRoute: VirtualRoute,
+  MatchMatchIdRoute: MatchMatchIdRoute,
+  WinnerTicketWinnerIdRoute: WinnerTicketWinnerIdRoute,
+  WinnerWinnerIdRoute: WinnerWinnerIdRoute,
+  ApiPublicTimeRoute: ApiPublicTimeRoute,
+  ResultDetailSportMatchIdRoute: ResultDetailSportMatchIdRoute,
+  ResultHighlightsSportMatchIdRoute: ResultHighlightsSportMatchIdRoute,
+  TeamSportTeamIdRoute: TeamSportTeamIdRoute,
+  ApiPublicRoyalDebugRoute: ApiPublicRoyalDebugRoute,
+  ApiPublicRoyalWalletSplatRoute: ApiPublicRoyalWalletSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
