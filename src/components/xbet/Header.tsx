@@ -174,7 +174,7 @@ export function Header() {
       </div>
 
       <nav className="mx-auto mt-0.5 h-[32px] w-full max-w-[1440px] rounded-none bg-xb-nav md:mt-1 md:h-[36px] md:rounded-t-xl">
-        <div className="xb-noscroll mx-auto flex h-full w-full items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-0">
+        <div className="xb-noscroll mx-auto flex h-full w-full items-center gap-0.5 overflow-x-auto overflow-y-hidden rounded-none px-0 md:gap-1 md:px-0 md:rounded-t-xl">
         {navItems.map((item) => (
           <Link
             key={item.label}
