@@ -110,7 +110,7 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`flex h-7 w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
+      className={`flex h-full w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
           ? "bg-xb-blue text-xb-on-dark"
           : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
@@ -261,7 +261,7 @@ function VirtualPageInner() {
       placing={placing}
       loggedIn={!!user}
       balance={balance}
-      listClassName={isMobile ? "max-h-[45dvh]" : "max-h-40"}
+      listClassName={isMobile ? "max-h-[45dvh]" : "flex-1 min-h-0"}
     />
   );
 
@@ -269,7 +269,7 @@ function VirtualPageInner() {
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       <Header />
-      <main className="mx-auto flex w-full max-w-[1440px] bg-xb-page flex-1 flex-col gap-1.5 overflow-hidden px-0 pb-28 pt-1.5 md:px-1.5 md:pb-16 lg:pb-1.5">
+      <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-1 overflow-hidden bg-xb-page px-0 pb-0 pt-1 md:px-1">
         <div className="flex items-center justify-between rounded-lg bg-xb-panel px-3 py-[2px] text-[11px] font-bold text-xb-text shadow-sm">
           <span>
             Time to kickoff: <span className="text-xb-blue">{clock}</span>
@@ -301,7 +301,7 @@ function VirtualPageInner() {
         )}
 
 
-        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:items-start lg:gap-2 lg:overflow-y-auto lg:pb-0">
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-1.5 overflow-y-auto pb-24 lg:grid lg:grid-cols-[repeat(3,minmax(0,1fr))_minmax(260px,22%)] lg:items-stretch lg:gap-2 lg:overflow-hidden lg:pb-0">
           {matches.length === 0 && offer.isError && (
             <div className="col-span-full flex items-center justify-center gap-2 rounded-lg bg-xb-panel py-10 text-[12px] text-xb-text-muted">
               <AlertTriangle className="h-4 w-4 text-xb-red" />
@@ -317,7 +317,7 @@ function VirtualPageInner() {
           {matches.map((m, idx) => (
             <section
               key={m.id}
-              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-hidden ${
+              className={`flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-hidden ${
                 idx === 0 ? "border-xb-blue" : "border-xb-line"
               } ${idx === activeIdx ? "" : "hidden lg:flex"}`}
             >
@@ -334,45 +334,52 @@ function VirtualPageInner() {
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-                {m.groups.map((g, gi) => (
-                  <div key={`${m.id}-${g.key}`} className="flex flex-col">
-                    {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
-                    <div
-                      className="grid border-b border-xb-line"
-                      style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
-                    >
-                      {g.odds.map((o) => {
-                        const type = g.key === "10" ? "OTHER" : g.type;
-                        const pick = `${type}|${o.name}`;
-                        const id = `${m.id}-${g.key}-${o.id}`;
-                        return (
-                          <Cell
-                            key={id}
-                            name={o.name}
-                            odd={o.odd}
-                            active={sels.some((s) => s.id === id)}
-                            onClick={() =>
-                              toggle({
-                                id,
-                                matchId: m.id,
-                                no: m.no,
-                                event: `${m.home} — ${m.away}`,
-                                pick,
-                                label: `#${m.no} ${g.label}: ${o.name}`,
-                                odd: o.odd,
-                              })
-                            }
-                          />
-                        );
-                      })}
+                {m.groups.map((g, gi) => {
+                  const cols = columnsFor(g);
+                  const rows = Math.ceil(g.odds.length / cols);
+                  return (
+                    <div key={`${m.id}-${g.key}`} className="flex min-h-0 flex-col" style={{ flex: rows }}>
+                      {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
+                      <div
+                        className="grid flex-1 border-b border-xb-line"
+                        style={{
+                          gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+                          gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+                        }}
+                      >
+                        {g.odds.map((o) => {
+                          const type = g.key === "10" ? "OTHER" : g.type;
+                          const pick = `${type}|${o.name}`;
+                          const id = `${m.id}-${g.key}-${o.id}`;
+                          return (
+                            <Cell
+                              key={id}
+                              name={o.name}
+                              odd={o.odd}
+                              active={sels.some((s) => s.id === id)}
+                              onClick={() =>
+                                toggle({
+                                  id,
+                                  matchId: m.id,
+                                  no: m.no,
+                                  event: `${m.home} — ${m.away}`,
+                                  pick,
+                                  label: `#${m.no} ${g.label}: ${o.name}`,
+                                  odd: o.odd,
+                                })
+                              }
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           ))}
 
-          <aside className="hidden min-h-0 flex-col gap-2 lg:flex lg:overflow-y-auto">
+          <aside className="hidden h-full min-h-0 flex-col gap-2 lg:flex lg:overflow-y-auto">
             <div className="overflow-hidden rounded-lg shadow-sm">
               <div className="grid grid-cols-2">
                 {(["stream", "tracker"] as const).map((t) => (
