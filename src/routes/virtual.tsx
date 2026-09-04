@@ -110,7 +110,7 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`flex h-7 w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
+      className={`flex h-full w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
           ? "bg-xb-blue text-xb-on-dark"
           : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
