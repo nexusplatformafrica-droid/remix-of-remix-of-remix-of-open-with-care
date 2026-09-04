@@ -4,7 +4,7 @@ export function VirtualSkeleton() {
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       {/* Header placeholder */}
-      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-xb-line bg-xb-header px-3">
+      <div className="mx-auto flex h-14 w-full max-w-[1440px] shrink-0 items-center gap-3 border-b border-xb-line bg-xb-header px-3">
         <Skeleton className="h-8 w-28 rounded-md bg-xb-on-dark/15" />
         <div className="hidden flex-1 items-center justify-center gap-4 md:flex">
           <Skeleton className="h-7 w-20 rounded-md bg-xb-on-dark/15" />
@@ -14,7 +14,7 @@ export function VirtualSkeleton() {
         <Skeleton className="ml-auto h-8 w-24 rounded-md bg-xb-on-dark/15" />
       </div>
 
-      <main className="flex w-full flex-1 flex-col gap-1.5 overflow-hidden px-0 pb-16 pt-1.5 md:px-1.5 md:pb-1.5">
+      <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-1.5 overflow-hidden bg-xb-page px-0 pb-28 pt-1.5 md:px-1.5 md:pb-16 lg:pb-1.5">
         {/* Top bar */}
         <Skeleton className="h-9 w-full rounded-lg bg-xb-panel" />
 

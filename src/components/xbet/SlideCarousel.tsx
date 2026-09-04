@@ -10,7 +10,7 @@ type Props = {
   emptyText?: string;
 };
 
-const SLIDE_MS = 6000;
+const SLIDE_MS = 9000;
 const EASE_MS = 700;
 
 /** Renders admin-published slides only — image only, no overlay or text. */

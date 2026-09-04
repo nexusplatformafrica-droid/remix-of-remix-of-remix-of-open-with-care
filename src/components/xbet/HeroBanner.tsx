@@ -49,7 +49,7 @@ export function GameTiles() {
         <Link
           key={g.name}
           to={g.to}
-          className="overflow-hidden rounded-md bg-xb-panel pb-0.5 text-left md:pb-2 shadow-sm ring-1 ring-xb-line transition-transform hover:-translate-y-0.5 hover:ring-xb-blue-light"
+          className="overflow-hidden rounded-md bg-xb-panel pb-0 text-left md:pb-0.5 shadow-sm ring-1 ring-xb-line transition-transform hover:-translate-y-0.5 hover:ring-xb-blue-light"
         >
           <div className="aspect-[16/9] overflow-hidden">
             <img
@@ -59,11 +59,11 @@ export function GameTiles() {
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
             />
           </div>
-          <div className="flex items-center gap-1 px-1.5 py-1 md:gap-1.5 md:px-2 md:py-1.5">
-            <span className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-sm bg-xb-odds text-[8px] font-black text-xb-blue">
+          <div className="flex items-center gap-1 px-1.5 py-0.5 md:px-1.5 md:py-1">
+            <span className="grid h-3 w-3 shrink-0 place-items-center rounded-sm bg-xb-odds text-[7px] font-black text-xb-blue">
               B
             </span>
-            <span className="truncate text-[10px] font-bold leading-tight text-xb-text md:text-[11.5px]">
+            <span className="truncate text-[9px] font-bold leading-tight text-xb-text md:text-[10px]">
               {g.name}
             </span>
           </div>
