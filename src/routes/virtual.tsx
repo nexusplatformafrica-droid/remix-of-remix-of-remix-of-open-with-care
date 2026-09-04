@@ -334,40 +334,47 @@ function VirtualPageInner() {
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-                {m.groups.map((g, gi) => (
-                  <div key={`${m.id}-${g.key}`} className="flex flex-col">
-                    {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
-                    <div
-                      className="grid border-b border-xb-line"
-                      style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
-                    >
-                      {g.odds.map((o) => {
-                        const type = g.key === "10" ? "OTHER" : g.type;
-                        const pick = `${type}|${o.name}`;
-                        const id = `${m.id}-${g.key}-${o.id}`;
-                        return (
-                          <Cell
-                            key={id}
-                            name={o.name}
-                            odd={o.odd}
-                            active={sels.some((s) => s.id === id)}
-                            onClick={() =>
-                              toggle({
-                                id,
-                                matchId: m.id,
-                                no: m.no,
-                                event: `${m.home} — ${m.away}`,
-                                pick,
-                                label: `#${m.no} ${g.label}: ${o.name}`,
-                                odd: o.odd,
-                              })
-                            }
-                          />
-                        );
-                      })}
+                {m.groups.map((g, gi) => {
+                  const cols = columnsFor(g);
+                  const rows = Math.ceil(g.odds.length / cols);
+                  return (
+                    <div key={`${m.id}-${g.key}`} className="flex min-h-0 flex-col" style={{ flex: rows }}>
+                      {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
+                      <div
+                        className="grid flex-1 border-b border-xb-line"
+                        style={{
+                          gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
+                          gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
+                        }}
+                      >
+                        {g.odds.map((o) => {
+                          const type = g.key === "10" ? "OTHER" : g.type;
+                          const pick = `${type}|${o.name}`;
+                          const id = `${m.id}-${g.key}-${o.id}`;
+                          return (
+                            <Cell
+                              key={id}
+                              name={o.name}
+                              odd={o.odd}
+                              active={sels.some((s) => s.id === id)}
+                              onClick={() =>
+                                toggle({
+                                  id,
+                                  matchId: m.id,
+                                  no: m.no,
+                                  event: `${m.home} — ${m.away}`,
+                                  pick,
+                                  label: `#${m.no} ${g.label}: ${o.name}`,
+                                  odd: o.odd,
+                                })
+                              }
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           ))}
