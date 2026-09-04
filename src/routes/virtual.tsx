@@ -337,7 +337,7 @@ function VirtualPageInner() {
                 <div key={`${m.id}-${g.key}`} className="flex flex-col lg:flex-1">
                   {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
                   <div
-                    className="grid gap-1 p-1 lg:h-full lg:flex-1 lg:auto-rows-fr"
+                    className="grid border-b border-xb-line"
                     style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
                   >
 
