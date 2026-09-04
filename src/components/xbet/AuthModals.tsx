@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import authSide from "@/assets/auth-side.jpg.asset.json";
+
 import {
   ChevronDown,
   Gift,
@@ -142,11 +144,28 @@ function Shell({
           className="grid w-full max-w-3xl overflow-hidden rounded-2xl bg-xb-panel shadow-2xl ring-1 ring-xb-line sm:rounded-3xl md:grid-cols-[0.85fr_1fr]"
         >
           <aside
-            className="hidden flex-col justify-between p-6 md:flex"
+            className="relative hidden flex-col justify-between overflow-hidden p-6 md:flex"
             style={{ background: "linear-gradient(150deg, #1d4f8c, #0d2b52)" }}
           >
-            {aside}
+            <img
+              src={authSide.url}
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45"
+              loading="lazy"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(150deg, rgba(29,79,140,0.85), rgba(13,43,82,0.92))",
+              }}
+            />
+            <div className="relative flex h-full flex-col justify-between">{aside}</div>
           </aside>
+
+
 
           <section className="relative max-h-[88vh] overflow-y-auto p-5 sm:p-6">
             <button
