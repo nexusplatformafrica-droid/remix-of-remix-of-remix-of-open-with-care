@@ -163,7 +163,7 @@ function SlotPage() {
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
       <Header />
-      <main className="flex-1 overflow-y-auto pb-16 pt-1 md:pb-4">
+      <main className="mx-auto w-full max-w-[1440px] flex-1 overflow-y-auto pb-16 pt-1 md:pb-4">
         {/* Breadcrumb / title bar */}
         <div className="flex items-center gap-2 bg-xb-header px-3 py-2 text-xb-on-dark md:px-5">
           <Home className="h-3.5 w-3.5 opacity-80" />

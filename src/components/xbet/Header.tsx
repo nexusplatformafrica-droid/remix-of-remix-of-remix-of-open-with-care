@@ -57,7 +57,7 @@ export function Header() {
   return (
     <header className="font-xb">
       <div className="rounded-b-none bg-xb-header md:rounded-b-xl">
-        <div className="mx-auto flex h-[50px] w-full max-w-[1280px] items-center justify-between px-2 sm:px-4">
+        <div className="mx-auto flex h-[50px] w-full max-w-[1440px] items-center justify-between px-2 sm:px-4">
         <Link to="/" className="flex items-center gap-0 text-2xl font-black tracking-tight">
           <span className="text-xb-on-dark">BET</span>
           <span className="text-xb-blue-light">PLUS+</span>
@@ -174,7 +174,7 @@ export function Header() {
       </div>
 
       <nav className="mt-0.5 h-[38px] rounded-none bg-xb-nav md:mt-1 md:h-[42px] md:rounded-xl">
-        <div className="xb-noscroll mx-auto flex h-full w-full max-w-[1280px] items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-2">
+        <div className="xb-noscroll mx-auto flex h-full w-full max-w-[1440px] items-center gap-0.5 overflow-x-auto px-0 md:gap-1 md:px-2">
         {navItems.map((item) => (
           <Link
             key={item.label}
