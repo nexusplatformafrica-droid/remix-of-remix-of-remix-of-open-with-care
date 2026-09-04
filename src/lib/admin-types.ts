@@ -239,6 +239,8 @@ export type SiteSettings = {
   license: string;
   address: string;
   allsportsApiKey: string;
+  /** Base URL of the payment backend (deposits / withdrawals). */
+  paymentsBase?: string;
 };
 
 export type AdminState = {

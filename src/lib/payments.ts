@@ -3,7 +3,10 @@
  * Every country / currency / limit here mirrors what the provider supports.
  */
 
-export const PAYMENTS_BASE = "https://function-bun-production-4d88.up.railway.app";
+import { DEFAULT_PAYMENTS_BASE, paymentsBase } from "./payments-base";
+
+/** Legacy constant kept for callers that only need a default. */
+export const PAYMENTS_BASE = DEFAULT_PAYMENTS_BASE;
 
 export type PayMethod = {
   id: string;
@@ -257,7 +260,7 @@ async function call<T = Record<string, unknown>>(
   path: string,
   init?: RequestInit,
 ): Promise<ApiResult<T>> {
-  const res = await fetch(`${PAYMENTS_BASE}${path}`, {
+  const res = await fetch(`${paymentsBase()}${path}`, {
     ...init,
     headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
   });
