@@ -110,7 +110,7 @@ function MatchPage() {
     <SportFilterProvider>
       <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
         <Header />
-        <main className="mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 gap-2 overflow-hidden px-0 pt-1 md:px-2 md:pt-2">
+        <main className="mx-auto flex min-h-0 w-full max-w-[1440px] bg-xb-page flex-1 gap-2 overflow-hidden px-0 pt-1 md:px-2 md:pt-2">
           <div className="hidden lg:block">
             <LeftSidebar />
           </div>
