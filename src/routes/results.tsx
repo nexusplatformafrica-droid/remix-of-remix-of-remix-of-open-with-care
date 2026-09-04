@@ -29,9 +29,9 @@ export const Route = createFileRoute("/results")({
 function ResultsPage() {
   return (
     <SportFilterProvider initialScope="results">
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
+      <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
         <Header />
-        <main className="mx-auto flex min-h-0 w-full max-w-[1440px] flex-1 flex-col gap-2 overflow-y-auto px-0 pb-14 pt-1 md:overflow-hidden md:px-0 md:pb-0 md:pt-0">
+        <main className="mx-auto flex min-h-0 w-full max-w-[1440px] bg-xb-page flex-1 flex-col gap-2 overflow-y-auto px-0 pb-14 pt-1 md:overflow-hidden md:px-0 md:pb-0 md:pt-0">
           <h1 className="sr-only">Football, basketball and tennis results</h1>
           <ResultsStats />
           <ResultsBoard />

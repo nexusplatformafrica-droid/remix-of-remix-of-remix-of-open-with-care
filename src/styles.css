@@ -206,9 +206,15 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: #0f1929;
+    background-image: url("/__l5e/assets-v1/5342c912-52f7-4b22-86af-23e8f3b330a1/background.svg");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--color-foreground);
   }
+
 }
 
 /* Odds drift animation — flashes when a bookmaker price moves during a silent refresh. */

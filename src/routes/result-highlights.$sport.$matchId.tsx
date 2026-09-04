@@ -31,9 +31,9 @@ function ResultHighlightsPage() {
   const s = (SPORTS as readonly string[]).includes(sport) ? (sport as Sport) : "football";
 
   return (
-    <div className="flex h-[100dvh] flex-col overflow-hidden bg-xb-page font-xb">
+    <div className="flex h-[100dvh] flex-col overflow-hidden font-xb">
       <Header />
-      <main className="mx-auto w-full max-w-[1440px] min-h-0 flex-1 overflow-y-auto pb-20 md:pb-4">
+      <main className="mx-auto w-full max-w-[1440px] bg-xb-page min-h-0 flex-1 overflow-y-auto pb-20 md:pb-4">
         <div className="sticky top-0 z-10 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 border-b border-xb-line bg-xb-panel px-3 py-2">
           <button
             type="button"
