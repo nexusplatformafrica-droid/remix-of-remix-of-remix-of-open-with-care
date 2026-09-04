@@ -54,7 +54,7 @@ export function SlideCarousel({
   if (!ready) {
     return (
       <div
-        className={`relative ${heightClass} animate-pulse overflow-hidden rounded-none sm:rounded-2xl bg-xb-panel-alt font-xb shadow-sm`}
+        className={`relative ${heightClass} animate-pulse overflow-hidden rounded-none sm:rounded-sm bg-xb-panel-alt font-xb shadow-sm`}
       >
         <div className="flex h-full flex-col justify-center gap-3 px-14">
           <div className="h-8 w-2/5 rounded bg-xb-odds" />
@@ -68,7 +68,7 @@ export function SlideCarousel({
   if (slides.length === 0) {
     return (
       <div
-        className={`grid ${heightClass} place-items-center rounded-none sm:rounded-2xl bg-xb-panel-alt font-xb text-[12px] text-xb-text-muted shadow-sm`}
+        className={`grid ${heightClass} place-items-center rounded-none sm:rounded-sm bg-xb-panel-alt font-xb text-[12px] text-xb-text-muted shadow-sm`}
       >
         {emptyText}
       </div>
@@ -80,7 +80,7 @@ export function SlideCarousel({
 
   return (
     <div
-      className={`relative ${heightClass} overflow-hidden rounded-none sm:rounded-2xl bg-black font-xb shadow-sm`}
+      className={`relative ${heightClass} overflow-hidden rounded-none sm:rounded-sm bg-black font-xb shadow-sm`}
     >
       <div
         className={`flex h-full w-full ${animate ? "transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]" : ""}`}
