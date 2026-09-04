@@ -57,31 +57,31 @@ export function Header() {
   return (
     <header className="font-xb">
       <div className="rounded-b-none bg-xb-header md:rounded-b-xl">
-        <div className="mx-auto flex h-[50px] w-full max-w-[1440px] items-center justify-between px-2 sm:px-4">
-        <Link to="/" className="flex items-center gap-0 text-2xl font-black tracking-tight">
+        <div className="mx-auto flex h-[40px] w-full max-w-[1440px] items-center justify-between px-2 sm:px-4">
+        <Link to="/" className="flex items-center gap-0 text-xl font-black tracking-tight">
           <span className="text-xb-on-dark">BET</span>
           <span className="text-xb-blue-light">PLUS+</span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <BonusMenu />
 
           {user ? (
-            <div className="flex h-8 items-center gap-2 rounded bg-white/10 px-3 text-xs text-xb-on-dark">
-              <span className="max-w-[130px] truncate font-bold">{user.label}</span>
+            <div className="flex h-7 items-center gap-2 rounded bg-white/10 px-2.5 text-[11px] text-xb-on-dark sm:px-3 sm:text-xs">
+              <span className="max-w-[110px] truncate font-bold sm:max-w-[130px]">{user.label}</span>
               <span className="text-xb-green">{money(balance)}</span>
             </div>
           ) : (
             <>
               <button
                 onClick={openRegister}
-                className="h-8 rounded bg-xb-green px-4 text-xs font-bold text-xb-on-dark transition-colors hover:bg-xb-green-dark"
+                className="h-7 rounded bg-xb-green px-3 text-[11px] font-bold text-xb-on-dark transition-colors hover:bg-xb-green-dark sm:px-4 sm:text-xs"
               >
                 REGISTRATION
               </button>
               <button
                 onClick={openLogin}
-                className="h-8 rounded bg-white/10 px-4 text-xs font-bold text-xb-on-dark transition-colors hover:bg-white/20"
+                className="h-7 rounded bg-white/10 px-3 text-[11px] font-bold text-xb-on-dark transition-colors hover:bg-white/20 sm:px-4 sm:text-xs"
               >
                 LOG IN
               </button>
@@ -91,7 +91,7 @@ export function Header() {
           {isAdmin && (
             <Link
               to="/admin"
-              className="flex h-8 items-center rounded bg-xb-blue-light px-3 text-xs font-bold text-xb-on-dark transition-opacity hover:opacity-90"
+              className="flex h-7 items-center rounded bg-xb-blue-light px-2.5 text-[11px] font-bold text-xb-on-dark transition-opacity hover:opacity-90 sm:px-3 sm:text-xs"
             >
               ADMIN
             </Link>
@@ -106,12 +106,12 @@ export function Header() {
               aria-haspopup="true"
               aria-expanded={clockOpen}
               aria-label="Time and country"
-              className="flex h-8 items-center gap-2 rounded bg-white/10 px-2 text-xs text-xb-on-dark transition-colors hover:bg-white/20"
+              className="flex h-7 items-center gap-1.5 rounded bg-white/10 px-2 text-[11px] text-xb-on-dark transition-colors hover:bg-white/20 sm:gap-2 sm:text-xs"
             >
               <img
                 src={loc.flagUrl}
                 alt={`${loc.country.name} flag`}
-                className="h-4 w-6 rounded-sm object-cover"
+                className="h-3.5 w-5 rounded-sm object-cover sm:h-4 sm:w-6"
                 loading="lazy"
               />
               <span>{now ? localClock(now, loc) : "--:--"}</span>
