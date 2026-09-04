@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import authSide from "@/assets/auth-side.jpg.asset.json";
+
 import {
   ChevronDown,
   Gift,
