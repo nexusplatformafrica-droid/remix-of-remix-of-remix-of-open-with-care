@@ -26,13 +26,13 @@ export function VirtualSkeleton() {
               className="flex min-h-0 flex-col overflow-hidden rounded-lg border border-xb-line bg-xb-panel shadow-sm"
             >
               <Skeleton className="h-7 w-full shrink-0 bg-xb-header" />
-              <div className="flex flex-1 flex-col gap-1 p-1">
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-1">
                 {Array.from({ length: 6 }).map((__, gi) => (
-                  <div key={gi} className="flex flex-1 flex-col gap-1">
+                  <div key={gi} className="flex flex-col">
                     <Skeleton className="h-5 w-full bg-xb-panel-alt" />
-                    <div className="grid flex-1 grid-cols-3 gap-1">
+                    <div className="grid grid-cols-3 gap-px">
                       {Array.from({ length: 3 }).map((_, oi) => (
-                        <Skeleton key={oi} className="h-full rounded-md bg-xb-odds" />
+                        <Skeleton key={oi} className="h-7 rounded-none bg-xb-odds" />
                       ))}
                     </div>
                   </div>
