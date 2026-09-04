@@ -95,7 +95,7 @@ function ScaledEmbed({
   );
 }
 
-/** Market row: name on the left, odd on the right — same rhythm as the reference sheet. */
+/** Market row: name on the left, odd on the right — softer, full-width rhythm. */
 function Cell({
   name,
   odd,
@@ -110,7 +110,7 @@ function Cell({
   return (
     <button
       onClick={onClick}
-      className={`flex h-8 w-full items-center justify-between gap-1 border-r border-b border-xb-line px-2 text-[11px] leading-none transition-colors last:border-r-0 ${
+      className={`flex h-7 w-full items-center justify-between gap-2 border-r border-b border-xb-line px-2.5 text-[11px] leading-none transition-colors last:border-r-0 ${
         active
           ? "bg-xb-blue text-xb-on-dark"
           : "bg-xb-panel-alt text-xb-text hover:bg-xb-odds-hover"
@@ -126,7 +126,7 @@ function Cell({
 
 function GroupTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-[3px] text-center text-[9px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
+    <div className="shrink-0 border-b border-xb-line bg-xb-header/90 px-2 py-1 text-center text-[10px] font-bold uppercase tracking-wider text-xb-on-dark-muted">
       {children}
     </div>
   );
@@ -317,13 +317,12 @@ function VirtualPageInner() {
           {matches.map((m, idx) => (
             <section
               key={m.id}
-              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-y-auto ${
+              className={`flex min-h-0 shrink-0 flex-col overflow-hidden rounded-sm border bg-xb-panel shadow-sm lg:shrink lg:overflow-hidden ${
                 idx === 0 ? "border-xb-blue" : "border-xb-line"
               } ${idx === activeIdx ? "" : "hidden lg:flex"}`}
-
             >
               <div
-                className={`sticky top-0 z-10 flex shrink-0 items-center gap-2 px-2 py-1 text-[11px] font-bold ${
+                className={`flex shrink-0 items-center gap-2 px-2 py-1 text-[11px] font-bold ${
                   idx === 0 ? "bg-xb-blue text-xb-on-dark" : "bg-xb-header text-xb-on-dark"
                 }`}
               >
@@ -334,42 +333,42 @@ function VirtualPageInner() {
                 <span className="rounded bg-black/20 px-1 text-[9px] uppercase">{m.league}</span>
               </div>
 
-              {m.groups.map((g, gi) => (
-                <div key={`${m.id}-${g.key}`} className="flex flex-col">
-
-                  {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
-                  <div
-                    className="grid border-b border-xb-line"
-                    style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
-                  >
-
-                    {g.odds.map((o) => {
-                      const type = g.key === "10" ? "OTHER" : g.type;
-                      const pick = `${type}|${o.name}`;
-                      const id = `${m.id}-${g.key}-${o.id}`;
-                      return (
-                        <Cell
-                          key={id}
-                          name={o.name}
-                          odd={o.odd}
-                          active={sels.some((s) => s.id === id)}
-                          onClick={() =>
-                            toggle({
-                              id,
-                              matchId: m.id,
-                              no: m.no,
-                              event: `${m.home} — ${m.away}`,
-                              pick,
-                              label: `#${m.no} ${g.label}: ${o.name}`,
-                              odd: o.odd,
-                            })
-                          }
-                        />
-                      );
-                    })}
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+                {m.groups.map((g, gi) => (
+                  <div key={`${m.id}-${g.key}`} className="flex flex-col">
+                    {m.groups[gi - 1]?.label !== g.label && <GroupTitle>{g.label}</GroupTitle>}
+                    <div
+                      className="grid border-b border-xb-line"
+                      style={{ gridTemplateColumns: `repeat(${columnsFor(g)}, minmax(0, 1fr))` }}
+                    >
+                      {g.odds.map((o) => {
+                        const type = g.key === "10" ? "OTHER" : g.type;
+                        const pick = `${type}|${o.name}`;
+                        const id = `${m.id}-${g.key}-${o.id}`;
+                        return (
+                          <Cell
+                            key={id}
+                            name={o.name}
+                            odd={o.odd}
+                            active={sels.some((s) => s.id === id)}
+                            onClick={() =>
+                              toggle({
+                                id,
+                                matchId: m.id,
+                                no: m.no,
+                                event: `${m.home} — ${m.away}`,
+                                pick,
+                                label: `#${m.no} ${g.label}: ${o.name}`,
+                                odd: o.odd,
+                              })
+                            }
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </section>
           ))}
 
