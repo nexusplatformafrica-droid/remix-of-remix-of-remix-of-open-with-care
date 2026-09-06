@@ -1325,7 +1325,9 @@ export async function fetchMatchDetails(sport: Sport, matchId: string): Promise<
       home: detailHome,
       away: detailAway,
       league: String(fixture["league_name"] ?? ""),
+      date: String(fixture["event_date"] ?? ""),
       finished: detailFinished,
+
     }),
     comments: toComments(commentRes, matchId),
     probabilities: toProbabilities(probRes),
