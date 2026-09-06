@@ -1055,14 +1055,47 @@ function toTeamLineup(raw: unknown): TeamLineup {
 
 /**
  * Highlight search on YouTube, used when the provider publishes no video for
- * a fixture. Parses the public results page (no API key required) and returns
- * the first few clips.
+ * a fixture. Parses the public results page (no API key required) and keeps
+ * only clips whose title names BOTH teams of this exact fixture, so a page
+ * never shows a clip from another game.
  */
 /** Video-game / simulation uploads that must never pass as real highlights. */
 const FAKE_VIDEO_RE =
   /\b(pes\s?\d*|efootball|fifa\s?\d+|fc\s?2[45]|pc\s?game|gameplay|game\s?play|simulation|simulated|prediction|predictions|preview\s?show|tips|betting|fm\s?\d+|football\s?manager|dream\s?league|ps[45]|xbox|mod|patch|realistic|recreation|emulator|sub\s?vs)\b/i;
 
-async function youtubeVideos(query: string, limit = 6): Promise<VideoItem[]> {
+type YtHit = { title: string; url: string; age: string };
+
+/** Words that carry no identity value when comparing a team name to a title. */
+const TEAM_STOPWORDS = new Set([
+  "fc","cf","sc","ac","afc","cd","ud","if","bk","sk","fk","club","de","the","united","city","town",
+  "real","athletic","atletico","sporting","team","women","u19","u20","u21","u23","ii","b",
+]);
+
+function normText(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Distinctive tokens of a team name (e.g. "Manchester United" -> manchester). */
+function teamTokens(name: string): string[] {
+  const all = normText(name).split(" ").filter(Boolean);
+  const core = all.filter((t) => t.length > 2 && !TEAM_STOPWORDS.has(t));
+  return core.length ? core : all;
+}
+
+/** True when the title clearly mentions this team. */
+function titleHasTeam(title: string, name: string): boolean {
+  const t = ` ${normText(title)} `;
+  const tokens = teamTokens(name);
+  if (!tokens.length) return false;
+  return tokens.some((tok) => t.includes(` ${tok} `) || t.includes(` ${tok}s `));
+}
+
+async function youtubeVideos(query: string, limit = 8): Promise<YtHit[]> {
   try {
     const res = await fetch(
       `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%253D%253D`,
@@ -1070,21 +1103,28 @@ async function youtubeVideos(query: string, limit = 6): Promise<VideoItem[]> {
     );
     if (!res.ok) return [];
     const html = await res.text();
-    const re = /"videoId":"([\w-]{11})"[\s\S]{0,400}?"text":"([^"]{5,120})"/g;
+    const re = /"videoId":"([\w-]{11})"([\s\S]{0,1200}?)"(?:viewCountText|ownerText)"/g;
     const seen = new Set<string>();
-    const out: VideoItem[] = [];
+    const out: YtHit[] = [];
     let m: RegExpExecArray | null;
     while ((m = re.exec(html)) && out.length < limit) {
       const id = m[1]!;
       if (seen.has(id)) continue;
       seen.add(id);
-      const raw = m[2] ?? "Highlights";
+      const block = m[2] ?? "";
+      const titleMatch = /"title":\{"runs":\[\{"text":"([^"]{3,160})"/.exec(block);
+      const ageMatch = /"publishedTimeText":\{"simpleText":"([^"]{3,40})"/.exec(block);
+      const raw = titleMatch?.[1] ?? "";
       const title = raw
         .replace(/\\u([\dA-Fa-f]{4})/g, (_s, h: string) => String.fromCharCode(parseInt(h, 16)))
         .replace(/\\(.)/g, "$1")
         .trim();
-      if (FAKE_VIDEO_RE.test(title)) continue;
-      out.push({ title: title || "Highlights", url: `https://www.youtube.com/watch?v=${id}` });
+      if (!title || FAKE_VIDEO_RE.test(title)) continue;
+      out.push({
+        title,
+        url: `https://www.youtube.com/watch?v=${id}`,
+        age: ageMatch?.[1] ?? "",
+      });
     }
     return out;
   } catch {
@@ -1092,10 +1132,48 @@ async function youtubeVideos(query: string, limit = 6): Promise<VideoItem[]> {
   }
 }
 
-/** Provider videos first; YouTube highlights when the provider has none. */
+/** Rough "how long ago was this uploaded" in days, from YouTube's age label. */
+function ageInDays(age: string): number | null {
+  const m = /(\d+)\s*(second|minute|hour|day|week|month|year)/i.exec(age);
+  if (!m) return null;
+  const n = Number(m[1]);
+  const unit = m[2]!.toLowerCase();
+  const per: Record<string, number> = {
+    second: 1 / 86400, minute: 1 / 1440, hour: 1 / 24, day: 1, week: 7, month: 30, year: 365,
+  };
+  return n * (per[unit] ?? 1);
+}
+
+/**
+ * Keeps only clips that match this exact fixture: both team names in the
+ * title, and an upload date close to the kick-off date (so an old meeting of
+ * the same two teams never shows up on a recent or live game).
+ */
+function verifyVideos(
+  hits: YtHit[],
+  fixture: { home: string; away: string; date: string; finished: boolean },
+): VideoItem[] {
+  const kickoff = fixture.date ? Date.parse(`${fixture.date}T00:00:00Z`) : NaN;
+  const daysSinceKickoff = Number.isNaN(kickoff)
+    ? null
+    : (Date.now() - kickoff) / 86_400_000;
+  return hits
+    .filter((h) => titleHasTeam(h.title, fixture.home) && titleHasTeam(h.title, fixture.away))
+    .filter((h) => {
+      if (daysSinceKickoff === null) return true;
+      const uploaded = ageInDays(h.age);
+      if (uploaded === null) return false;
+      // The clip must be published after kick-off, within a sensible window.
+      const tolerance = fixture.finished ? 10 : 3;
+      return uploaded <= daysSinceKickoff + tolerance && uploaded >= daysSinceKickoff - tolerance;
+    })
+    .map((h) => ({ title: h.title, url: h.url }));
+}
+
+/** Provider videos first; verified YouTube highlights when the provider has none. */
 async function resolveVideos(
   raw: Json[] | null,
-  fixture: { home: string; away: string; league: string; finished: boolean },
+  fixture: { home: string; away: string; league: string; date: string; finished: boolean },
 ): Promise<VideoItem[]> {
   const provider = (raw ?? [])
     .map((v) => ({
@@ -1105,14 +1183,20 @@ async function resolveVideos(
     .filter((v) => v.url);
   if (provider.length) return provider;
   if (!fixture.home || !fixture.away) return [];
-  const suffix = fixture.finished ? "highlights" : "preview";
+  const suffix = fixture.finished ? "highlights" : "highlights";
   const league = fixture.league ? ` ${fixture.league}` : "";
-  const primary = await youtubeVideos(
-    `"${fixture.home}" vs "${fixture.away}"${league} ${suffix} -PES -eFootball -FIFA -gameplay`,
-  );
-  if (primary.length) return primary;
-  return youtubeVideos(`${fixture.home} vs ${fixture.away} ${suffix} -gameplay -PES -eFootball`);
+  const year = fixture.date ? ` ${fixture.date.slice(0, 4)}` : "";
+  const queries = [
+    `"${fixture.home}" vs "${fixture.away}"${league}${year} ${suffix} -PES -eFootball -FIFA -gameplay`,
+    `${fixture.home} vs ${fixture.away} ${suffix}${year} -gameplay -PES -eFootball`,
+  ];
+  for (const q of queries) {
+    const verified = verifyVideos(await youtubeVideos(q), fixture);
+    if (verified.length) return verified.slice(0, 6);
+  }
+  return [];
 }
+
 
 export async function fetchMatchDetails(sport: Sport, matchId: string): Promise<MatchDetails> {
   const empty: MatchDetails = {
