@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "https://project--1f22d616-b940-4829-b62d-a0d55bbc2c52.lovable.app";
+const BASE_URL = "https://project--45be4857-1ae8-4dab-91a7-c16382c5a0e2.lovable.app";
 
 interface SitemapEntry {
   path: string;
@@ -18,6 +18,11 @@ const entries: SitemapEntry[] = [
   { path: "/slot", changefreq: "daily", priority: "0.9" },
   { path: "/results", changefreq: "hourly", priority: "0.8" },
   { path: "/lucky-winner", changefreq: "daily", priority: "0.7" },
+  { path: "/countries", changefreq: "weekly", priority: "0.6" },
+  { path: "/standings", changefreq: "daily", priority: "0.6" },
+  { path: "/teams", changefreq: "weekly", priority: "0.6" },
+  { path: "/players", changefreq: "weekly", priority: "0.6" },
+  { path: "/topscorers", changefreq: "daily", priority: "0.6" },
   { path: "/contact", changefreq: "monthly", priority: "0.5" },
   { path: "/about", changefreq: "monthly", priority: "0.5" },
   { path: "/faq", changefreq: "monthly", priority: "0.5" },
@@ -35,6 +40,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           [
             `  <url>`,
             `    <loc>${BASE_URL}${e.path}</loc>`,
+            `    <lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>`,
             e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
             e.priority ? `    <priority>${e.priority}</priority>` : null,
             `  </url>`,

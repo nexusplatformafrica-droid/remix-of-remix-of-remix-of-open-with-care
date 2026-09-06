@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ShieldCheck, Zap, Globe2, HeartHandshake, ArrowRight } from "lucide-react";
 import { PageShell } from "@/components/xbet/PageShell";
+import licenseBadge from "@/assets/nlgrb-license.png.asset.json";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `https://project--45be4857-1ae8-4dab-91a7-c16382c5a0e2.lovable.app/about` }],
   }),
   component: AboutPage,
 });
@@ -53,6 +55,26 @@ function AboutPage() {
             </section>
           ))}
         </div>
+
+        <section className="rounded-2xl bg-xb-panel p-4 shadow-sm md:p-5">
+          <h2 className="text-lg font-black text-xb-text">Licensing</h2>
+          <p className="mt-2 text-[13px] leading-relaxed text-xb-text-muted md:text-sm">
+            This website is licensed under <strong className="text-xb-text">NETBET CO. LTD</strong>,
+            holder of registration licence number{" "}
+            <strong className="text-xb-text">NLGRB-BM-26-0273</strong>, issued by the National
+            Lotteries and Gaming Regulatory Board of Uganda.
+          </p>
+          <div className="mt-3 inline-flex rounded-xl bg-white p-3">
+            <img
+              src={licenseBadge.url}
+              alt="National Lotteries and Gaming Regulatory Board of Uganda licence badge"
+              loading="lazy"
+              width={1024}
+              height={276}
+              className="h-10 w-auto md:h-12"
+            />
+          </div>
+        </section>
 
         <section className="rounded-2xl bg-xb-panel p-4 shadow-sm md:p-5">
           <h2 className="text-lg font-black text-xb-text">Explore</h2>

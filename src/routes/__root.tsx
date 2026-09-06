@@ -84,7 +84,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const SITE_URL = "https://project--1f22d616-b940-4829-b62d-a0d55bbc2c52.lovable.app";
+const SITE_URL = "https://project--45be4857-1ae8-4dab-91a7-c16382c5a0e2.lovable.app";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({

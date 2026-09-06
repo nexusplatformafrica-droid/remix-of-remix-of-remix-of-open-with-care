@@ -44,7 +44,7 @@ const games = [
 
 export function GameTiles() {
   return (
-    <div className="mt-2 grid grid-cols-2 gap-1.5 px-1.5 sm:grid-cols-3 sm:gap-2 sm:px-0 md:grid-cols-4 lg:grid-cols-5 font-xb">
+    <div className="mt-2 grid grid-cols-3 gap-1.5 px-1.5 sm:gap-2 sm:px-0 md:grid-cols-4 lg:grid-cols-5 font-xb">
       {games.map((g) => (
         <Link
           key={g.name}
