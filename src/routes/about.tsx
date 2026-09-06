@@ -20,6 +20,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `https://project--45be4857-1ae8-4dab-91a7-c16382c5a0e2.lovable.app/about` }],
   }),
   component: AboutPage,
 });
